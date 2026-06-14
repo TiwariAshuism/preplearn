@@ -13,7 +13,7 @@ export function CodeBlockCopy() {
       btn.type = "button";
       btn.setAttribute("data-copy-btn", "true");
       btn.className =
-        "absolute right-2 top-2 rounded-md border border-zinc-600/50 bg-zinc-800/90 px-2 py-1 text-xs text-zinc-200 opacity-0 transition-opacity group-hover/code:opacity-100";
+        "absolute right-2 top-2 rounded-md border border-zinc-600/50 bg-zinc-800/90 px-2 py-1 text-xs text-zinc-200 opacity-100 transition-opacity sm:opacity-0 sm:group-hover/code:opacity-100";
       btn.textContent = "Copy";
 
       btn.addEventListener("click", async () => {

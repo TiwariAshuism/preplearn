@@ -19,6 +19,18 @@ import type {
 } from "./types";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
+const ROOT_INDEX_PATH = path.join(CONTENT_DIR, "index.md");
+
+function readRootIndexSlug(): string[] | null {
+  if (!fs.existsSync(ROOT_INDEX_PATH)) return null;
+
+  const { data } = matter(fs.readFileSync(ROOT_INDEX_PATH, "utf-8"));
+  if (typeof data.slug === "string" && data.slug.trim()) {
+    return data.slug.split("/").filter(Boolean);
+  }
+
+  return null;
+}
 
 function assertContentDir(): void {
   if (!fs.existsSync(CONTENT_DIR)) {
@@ -75,7 +87,9 @@ export function getSectionMeta(dirPath: string): SectionMeta | null {
 
 function filePathToSlug(filePath: string): string[] {
   const relative = path.relative(CONTENT_DIR, filePath).replace(/\\/g, "/");
-  if (relative === "index.md") return [];
+  if (relative === "index.md") {
+    return readRootIndexSlug() ?? [];
+  }
 
   if (relative.endsWith("/index.md")) {
     return relative.slice(0, -"/index.md".length).split("/");
@@ -87,6 +101,11 @@ function filePathToSlug(filePath: string): string[] {
 export function slugToFilePath(slug: string[]): string | null {
   if (slug.length === 0) return null;
 
+  const rootSlug = readRootIndexSlug();
+  if (rootSlug && slug.join("/") === rootSlug.join("/")) {
+    return ROOT_INDEX_PATH;
+  }
+
   const asFile = path.join(CONTENT_DIR, ...slug) + ".md";
   if (fs.existsSync(asFile)) return asFile;
 
@@ -94,6 +113,25 @@ export function slugToFilePath(slug: string[]): string | null {
   if (fs.existsSync(asIndex)) return asIndex;
 
   return null;
+}
+
+/** Resolve a frontmatter child slug to on-disk path segments. */
+export function resolveChildSlugParts(
+  childSlug: string,
+  parentSlug: string[],
+): string[] {
+  if (childSlug.includes("/")) return childSlug.split("/");
+
+  const candidates = [[childSlug], [...parentSlug, childSlug]];
+
+  for (const parts of candidates) {
+    if (parts.length === 0) continue;
+    const asFile = path.join(CONTENT_DIR, ...parts) + ".md";
+    const asIndex = path.join(CONTENT_DIR, ...parts, "index.md");
+    if (fs.existsSync(asFile) || fs.existsSync(asIndex)) return parts;
+  }
+
+  return [childSlug];
 }
 
 function inferParentSlug(slug: string[]): string | null {
@@ -398,9 +436,7 @@ export function getPageBySlug(slug: string[]): PageData | null {
 
   if (parsed.frontmatter.children.length > 0) {
     for (const childSlug of parsed.frontmatter.children) {
-      const childSlugParts = childSlug.includes("/")
-        ? childSlug.split("/")
-        : [...parsed.slug, childSlug];
+      const childSlugParts = resolveChildSlugParts(childSlug, parsed.slug);
 
       const childPath = slugToFilePath(childSlugParts);
       if (!childPath) continue;
@@ -513,6 +549,22 @@ export function getNavTree(): NavNode[] {
 
   const nodes: NavNode[] = [];
   const claimedTopLevelSlugs = new Set<string>();
+
+  if (fs.existsSync(ROOT_INDEX_PATH)) {
+    const parsed = parsePageFile(ROOT_INDEX_PATH);
+    if (isCollectionRoot(parsed, ROOT_INDEX_PATH)) {
+      const node = buildCollectionNavNode(ROOT_INDEX_PATH, parsed.slug);
+      if (node) {
+        nodes.push(node);
+        for (const childSlug of parsed.frontmatter.children) {
+          const key = childSlug.includes("/")
+            ? childSlug.split("/")[0]
+            : childSlug;
+          claimedTopLevelSlugs.add(key);
+        }
+      }
+    }
+  }
 
   for (const entry of fs.readdirSync(CONTENT_DIR, { withFileTypes: true })) {
     if (entry.name.startsWith("_") || entry.name.startsWith(".")) continue;

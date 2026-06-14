@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PrepLearn — Backend engineering roadmaps & templates",
+  title: "PrepLearn — Backend & system design roadmaps",
   description:
-    "Structured learning paths for backend engineers. Browse phases, topics, and production-grade templates.",
+    "Structured 90-day learning paths for backend engineering, LLD, HLD, and mobile — work through phases in order.",
 };
 
 export default function RootLayout({

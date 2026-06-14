@@ -47,10 +47,62 @@ function parseIndexMeta(indexPath: string) {
   };
 }
 
+function readRootIndexCollectionRoot(): CollectionRootInfo | null {
+  const rootIndexPath = path.join(CONTENT_DIR, "index.md");
+  if (!fs.existsSync(rootIndexPath)) return null;
+
+  const raw = fs.readFileSync(rootIndexPath, "utf-8");
+  const { data, content } = matter(raw);
+  const parsed: ParsedPage = {
+    frontmatter: {
+      source: data.source === "notion" ? "notion" : "manual",
+      title: typeof data.title === "string" ? data.title : "Roadmaps",
+      slug:
+        typeof data.slug === "string" && data.slug.trim()
+          ? data.slug
+          : "index",
+      notionId: typeof data.notionId === "string" ? data.notionId : null,
+      notionRootId:
+        typeof data.notionRootId === "string" ? data.notionRootId : null,
+      parent: data.parent === null ? null : typeof data.parent === "string" ? data.parent : null,
+      children: [],
+      order: 0,
+      icon: null,
+      cover: null,
+    },
+    content,
+    filePath: rootIndexPath,
+    slug:
+      typeof data.slug === "string" && data.slug.trim()
+        ? data.slug.split("/").filter(Boolean)
+        : [],
+  };
+
+  if (!isCollectionRoot(parsed, rootIndexPath)) return null;
+
+  const meta = parseIndexMeta(rootIndexPath);
+  const slug =
+    typeof data.slug === "string" && data.slug.trim()
+      ? data.slug.split("/").filter(Boolean)
+      : [];
+
+  return {
+    slug,
+    href: slugToHref(slug),
+    title: meta.title,
+    childSlugs: meta.childSlugs,
+    source: meta.source,
+    notionRootId: meta.notionRootId,
+  };
+}
+
 export function getAllCollectionRoots(): CollectionRootInfo[] {
   if (!fs.existsSync(CONTENT_DIR)) return [];
 
   const roots: CollectionRootInfo[] = [];
+
+  const rootIndex = readRootIndexCollectionRoot();
+  if (rootIndex) roots.push(rootIndex);
 
   for (const entry of fs.readdirSync(CONTENT_DIR, { withFileTypes: true })) {
     if (entry.name.startsWith("_") || entry.name.startsWith(".")) continue;

@@ -75,7 +75,7 @@ export function PrevNextNav({
   return (
     <nav
       aria-label="Previous and next"
-      className="mt-10 grid gap-3 border-t border-zinc-200 pt-8 sm:grid-cols-2 dark:border-zinc-800"
+      className="mt-10 grid gap-3 border-t border-zinc-200 pt-8 dark:border-zinc-800 sm:grid-cols-2"
     >
       {prev ? (
         <Link
@@ -83,20 +83,20 @@ export function PrevNextNav({
           className="rounded-lg border border-zinc-200 p-4 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-900"
         >
           <span className="text-xs text-zinc-500">Previous</span>
-          <span className="mt-1 block text-sm font-medium text-zinc-900 dark:text-zinc-100">
+          <span className="mt-1 block text-sm font-medium text-balance text-zinc-900 dark:text-zinc-100">
             {prev.title}
           </span>
         </Link>
       ) : (
-        <div />
+        <div className="hidden sm:block" />
       )}
       {next ? (
         <Link
           href={next.href}
-          className="rounded-lg border border-zinc-200 p-4 text-right transition-colors hover:bg-zinc-50 sm:col-start-2 dark:border-zinc-800 dark:hover:bg-zinc-900"
+          className={`rounded-lg border border-zinc-200 p-4 transition-colors hover:bg-zinc-50 sm:text-right ${!prev ? "sm:col-start-2" : ""} dark:border-zinc-800 dark:hover:bg-zinc-900`}
         >
           <span className="text-xs text-zinc-500">Next</span>
-          <span className="mt-1 block text-sm font-medium text-zinc-900 dark:text-zinc-100">
+          <span className="mt-1 block text-sm font-medium text-balance text-zinc-900 dark:text-zinc-100">
             {next.title}
           </span>
         </Link>

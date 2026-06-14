@@ -52,12 +52,12 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 p-4 pt-[15vh]"
+      className="fixed inset-0 z-[60] flex items-start justify-center bg-black/40 p-3 pt-[10vh] sm:p-4 sm:pt-[15vh]"
       onClick={onClose}
       role="presentation"
     >
       <div
-        className="w-full max-w-lg rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-700 dark:bg-zinc-900"
+        className="max-h-[min(80vh,32rem)] w-full max-w-lg overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-700 dark:bg-zinc-900"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -94,7 +94,11 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
   );
 }
 
-export function SearchTrigger() {
+type SearchTriggerProps = {
+  compact?: boolean;
+};
+
+export function SearchTrigger({ compact = false }: SearchTriggerProps) {
   const [open, setOpen] = useState(false);
 
   const toggle = useCallback(() => setOpen((v) => !v), []);
@@ -115,9 +119,22 @@ export function SearchTrigger() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-left text-xs text-zinc-500 hover:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-zinc-600"
+        aria-label="Search roadmaps"
+        className={
+          compact
+            ? "inline-flex shrink-0 items-center justify-center rounded-md border border-zinc-200 bg-white p-2 text-zinc-600 hover:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-zinc-600"
+            : "w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-left text-xs text-zinc-500 hover:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:border-zinc-600"
+        }
       >
-        Search… <kbd className="float-right text-zinc-400">⌘K</kbd>
+        {compact ? (
+          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
+          </svg>
+        ) : (
+          <>
+            Search… <kbd className="float-right text-zinc-400">⌘K</kbd>
+          </>
+        )}
       </button>
       <SearchDialog open={open} onClose={() => setOpen(false)} />
     </>

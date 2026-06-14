@@ -28,8 +28,8 @@ export function TemplatePage({
   const pageHref = `/templates/${slug.join("/")}`;
 
   return (
-    <article className="xl:grid xl:grid-cols-[1fr_220px] xl:gap-10">
-      <div className="min-w-0">
+    <article className="xl:grid xl:grid-cols-[minmax(0,48rem)_220px] xl:gap-10 xl:justify-between">
+      <div className="min-w-0 max-w-3xl">
         <CodeBlockCopy />
         <Breadcrumbs items={breadcrumbs} />
 
@@ -51,8 +51,8 @@ export function TemplatePage({
         )}
 
         <header className="mb-6 border-b border-zinc-200 pb-6 dark:border-zinc-800">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <h1 className="text-2xl font-bold tracking-tight text-balance text-zinc-900 sm:text-3xl dark:text-zinc-50">
               {frontmatter.icon ? `${frontmatter.icon} ` : ""}
               {frontmatter.title}
             </h1>

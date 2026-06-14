@@ -1,8 +1,9 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { getAllSlugs } from "@/features/mdx-parser/lib/content";
+import { getAllSlugs, resolveChildSlugParts } from "@/features/mdx-parser/lib/content";
 import { extractEstimatedDays } from "@/features/mdx-parser/lib/page-context";
+import { inferRoadmapCategory, type RoadmapCategory } from "./categories";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
@@ -18,6 +19,8 @@ export type HomeCollection = {
   title: string;
   description: string;
   href: string;
+  slugKey: string;
+  category: RoadmapCategory;
   icon: string | null;
   order: number;
   childCount: number;
@@ -103,9 +106,7 @@ function resolveChildItems(
     for (const childSlug of frontmatter.children) {
       if (typeof childSlug !== "string") continue;
 
-      const childSlugParts = childSlug.includes("/")
-        ? childSlug.split("/")
-        : [...parentSlug, childSlug];
+      const childSlugParts = resolveChildSlugParts(childSlug, parentSlug);
 
       const asFile = path.join(CONTENT_DIR, ...childSlugParts) + ".md";
       const asIndex = path.join(CONTENT_DIR, ...childSlugParts, "index.md");
@@ -198,13 +199,18 @@ function buildCollectionFromPath(
   const parentDir = path.dirname(filePath);
   const children = resolveChildItems(parentDir, slug, frontmatter);
 
+  const slugKey = slug.length > 0 ? slug.join("/") : "index";
+  const title =
+    (typeof frontmatter.title === "string" && frontmatter.title) ||
+    slug.join("/") ||
+    "Roadmaps";
+
   return {
-    title:
-      (typeof frontmatter.title === "string" && frontmatter.title) ||
-      slug.join("/") ||
-      "Templates",
+    title,
     description: extractDescription(content),
     href: slugToHref(slug),
+    slugKey,
+    category: inferRoadmapCategory(slugKey, title),
     icon: typeof frontmatter.icon === "string" ? frontmatter.icon : null,
     order: typeof frontmatter.order === "number" ? frontmatter.order : 0,
     childCount: children.length,
@@ -229,8 +235,21 @@ export function getHomeContent(): HomeContent {
   if (fs.existsSync(rootIndex)) {
     const { frontmatter } = parseMdFile(rootIndex);
     if (isCollectionRoot(frontmatter, rootIndex)) {
-      collections.push(buildCollectionFromPath(rootIndex, []));
+      const rootSlug =
+        typeof frontmatter.slug === "string" && frontmatter.slug.trim()
+          ? frontmatter.slug.split("/").filter(Boolean)
+          : [];
+      collections.push(buildCollectionFromPath(rootIndex, rootSlug));
       collectionRoots.add("index.md");
+      for (const childSlug of Array.isArray(frontmatter.children)
+        ? frontmatter.children
+        : []) {
+        if (typeof childSlug === "string") {
+          collectionRoots.add(
+            childSlug.includes("/") ? childSlug.split("/")[0] : childSlug,
+          );
+        }
+      }
     }
   }
 
