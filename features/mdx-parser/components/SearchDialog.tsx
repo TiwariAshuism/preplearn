@@ -52,12 +52,12 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-start justify-center bg-black/40 p-3 pt-[10vh] sm:p-4 sm:pt-[15vh]"
+      className="fixed inset-0 z-[60] flex animate-fade-in items-start justify-center bg-black/40 p-3 pt-[10vh] motion-reduce:animate-none sm:p-4 sm:pt-[15vh]"
       onClick={onClose}
       role="presentation"
     >
       <div
-        className="max-h-[min(80vh,32rem)] w-full max-w-lg overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl dark:border-zinc-700 dark:bg-zinc-900"
+        className="max-h-[min(80vh,32rem)] w-full max-w-lg overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl animate-scale-in motion-reduce:animate-none dark:border-zinc-700 dark:bg-zinc-900"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -79,7 +79,7 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
               <Link
                 href={r.href}
                 onClick={onClose}
-                className="block px-4 py-2 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                className="block px-4 py-2 transition-colors duration-150 hover:bg-zinc-50 dark:hover:bg-zinc-800"
               >
                 <span className="block text-sm font-medium text-zinc-900 dark:text-zinc-100">
                   {r.title}

@@ -74,7 +74,7 @@ export function MobileSidebar({
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-doc-nav"
-          className="inline-flex shrink-0 items-center justify-center rounded-md border border-zinc-200 p-2 text-zinc-700 dark:border-zinc-700 dark:text-zinc-300"
+          className="inline-flex shrink-0 items-center justify-center rounded-md border border-zinc-200 p-2 text-zinc-700 transition-transform duration-200 active:scale-95 dark:border-zinc-700 dark:text-zinc-300"
         >
           <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
           {open ? (
@@ -107,18 +107,16 @@ export function MobileSidebar({
         <button
           type="button"
           aria-label="Close menu"
-          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/40 animate-fade-in motion-reduce:animate-none lg:hidden"
           onClick={() => setOpen(false)}
         />
       )}
 
       <aside
         id="mobile-doc-nav"
-        className={`${
-          open
-            ? "fixed inset-y-0 left-0 z-50 flex w-[min(100vw,18rem)] flex-col border-r border-zinc-200 bg-zinc-50 px-4 py-6 shadow-xl dark:border-zinc-800 dark:bg-zinc-950"
-            : "hidden"
-        } lg:static lg:block lg:w-72 lg:shrink-0 lg:border-r lg:border-zinc-200 lg:bg-zinc-50 lg:px-4 lg:py-6 lg:shadow-none dark:lg:border-zinc-800 dark:lg:bg-zinc-950`}
+        className={`fixed inset-y-0 left-0 z-50 flex w-[min(100vw,18rem)] flex-col border-r border-zinc-200 bg-zinc-50 px-4 py-6 shadow-xl transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none dark:border-zinc-800 dark:bg-zinc-950 lg:static lg:z-auto lg:block lg:w-72 lg:shrink-0 lg:translate-x-0 lg:border-r lg:border-zinc-200 lg:bg-zinc-50 lg:px-4 lg:py-6 lg:shadow-none dark:lg:border-zinc-800 dark:lg:bg-zinc-950 ${
+          open ? "translate-x-0" : "-translate-x-full pointer-events-none lg:pointer-events-auto"
+        }`}
       >
         <div className="min-h-0 flex-1 overflow-y-auto lg:pt-0">
           <SidebarPanel
@@ -129,7 +127,10 @@ export function MobileSidebar({
         </div>
       </aside>
 
-      <main className="min-w-0 flex-1 overflow-x-hidden px-4 py-6 sm:px-6 sm:py-8 lg:px-10">
+      <main
+        key={pathname}
+        className="min-w-0 flex-1 overflow-x-hidden px-4 py-6 animate-on-load sm:px-6 sm:py-8 lg:px-10"
+      >
         {children}
       </main>
     </div>

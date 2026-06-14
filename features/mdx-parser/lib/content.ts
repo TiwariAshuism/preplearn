@@ -372,9 +372,7 @@ function buildCollectionNavNode(
 
   if (parsed.frontmatter.children.length > 0) {
     for (const childSlug of parsed.frontmatter.children) {
-      const slugParts = childSlug.includes("/")
-        ? childSlug.split("/")
-        : [childSlug];
+      const slugParts = resolveChildSlugParts(childSlug, slugPrefix);
       const node = buildNavNodeFromSlugParts(slugParts, false);
       if (node) children.push(node);
     }

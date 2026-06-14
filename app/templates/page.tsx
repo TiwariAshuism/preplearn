@@ -22,14 +22,14 @@ export default function TemplatesCatalogPage() {
           <div className="mx-auto max-w-6xl">
             <Link
               href="/"
-              className="text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
+              className="animate-on-load text-sm font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
             >
               ← Home
             </Link>
-            <h1 className="mt-4 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
+            <h1 className="animate-on-load-delay-1 mt-4 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
               All roadmaps
             </h1>
-            <p className="mt-2 max-w-2xl text-zinc-600 dark:text-zinc-400">
+            <p className="animate-on-load-delay-2 mt-2 max-w-2xl text-zinc-600 dark:text-zinc-400">
               Pick a path that matches your goal — backend fundamentals, system
               design interviews, mobile development, or deep technical notes.
               Each roadmap opens with its own focused navigation.

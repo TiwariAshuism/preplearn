@@ -6,6 +6,7 @@ import {
   ROADMAP_CATEGORY_FILTERS,
   type RoadmapCategoryFilter,
 } from "../lib/categories";
+import { AnimateIn } from "@/features/ui/components/AnimateIn";
 import { RoadmapCard } from "./RoadmapCard";
 
 type RoadmapCatalogProps = {
@@ -57,7 +58,8 @@ export function RoadmapCatalog({
   return (
     <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
       {showHeader && (
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <AnimateIn>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-sm font-medium uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
               Learning paths
@@ -68,7 +70,8 @@ export function RoadmapCatalog({
                 : `${collections.length} roadmaps to explore`}
             </h2>
           </div>
-        </div>
+          </div>
+        </AnimateIn>
       )}
 
       {showFilters && collections.length > 0 && (
@@ -91,10 +94,10 @@ export function RoadmapCatalog({
                 role="tab"
                 aria-selected={active}
                 onClick={() => setCategory(filter.id)}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 ${
                   active
-                    ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-                    : "border border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-zinc-600"
+                    ? "scale-100 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                    : "border border-zinc-200 bg-white text-zinc-600 hover:scale-[1.02] hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:border-zinc-600"
                 }`}
               >
                 {filter.label}
@@ -114,8 +117,10 @@ export function RoadmapCatalog({
         <div
           className={`grid gap-5 sm:grid-cols-2 ${showFilters || showHeader ? "mt-8" : ""}`}
         >
-          {filtered.map((collection) => (
-            <RoadmapCard key={collection.href} collection={collection} />
+          {filtered.map((collection, index) => (
+            <AnimateIn key={collection.href} delay={index * 70}>
+              <RoadmapCard collection={collection} />
+            </AnimateIn>
           ))}
         </div>
       ) : (
@@ -128,18 +133,18 @@ export function RoadmapCatalog({
             Additional notes
           </h2>
           <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {standalonePages.map((page) => (
-              <li key={page.href}>
+            {standalonePages.map((page, index) => (
+              <AnimateIn key={page.href} as="li" delay={index * 60}>
                 <a
                   href={page.href}
-                  className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white p-4 transition-colors hover:border-emerald-200 hover:bg-emerald-50/30 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-emerald-900"
+                  className="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-emerald-50/30 hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-emerald-900"
                 >
                   <span className="text-xl">{page.icon ?? "📄"}</span>
                   <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                     {page.title}
                   </span>
                 </a>
-              </li>
+              </AnimateIn>
             ))}
           </ul>
         </div>

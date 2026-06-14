@@ -19,7 +19,7 @@ function PhaseChip({
   return (
     <Link
       href={child.href}
-      className="inline-flex items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-0.5 text-xs font-medium text-zinc-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/40 dark:hover:text-emerald-300"
+      className="inline-flex items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-2.5 py-0.5 text-xs font-medium text-zinc-700 transition-all duration-200 hover:scale-[1.03] hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-300 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/40 dark:hover:text-emerald-300"
       title={child.title}
     >
       {child.icon ? <span>{child.icon}</span> : null}
@@ -35,7 +35,7 @@ export function RoadmapCard({ collection }: RoadmapCardProps) {
   const cleanTitle = cleanRoadmapTitle(collection.title);
 
   return (
-    <article className="group flex h-full flex-col rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900/50">
+    <article className="group flex h-full flex-col rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-200/60 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-emerald-900/40">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <span

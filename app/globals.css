@@ -12,6 +12,106 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --animate-fade-in: fade-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in-up: fade-in-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-scale-in: scale-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-slide-in-left: slide-in-left 0.35s cubic-bezier(0.32, 0.72, 0, 1) both;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96) translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  @keyframes slide-in-left {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+}
+
+.animate-in-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.animate-in-view {
+  animation: var(--animate-fade-in-up);
+}
+
+.animate-on-load {
+  animation: var(--animate-fade-in-up);
+}
+
+.animate-on-load-delay-1 {
+  animation: var(--animate-fade-in-up);
+  animation-delay: 80ms;
+}
+
+.animate-on-load-delay-2 {
+  animation: var(--animate-fade-in-up);
+  animation-delay: 160ms;
+}
+
+.animate-on-load-delay-3 {
+  animation: var(--animate-fade-in-up);
+  animation-delay: 240ms;
+}
+
+.animate-on-load-delay-4 {
+  animation: var(--animate-fade-in-up);
+  animation-delay: 320ms;
+}
+
+.animate-on-load-delay-5 {
+  animation: var(--animate-fade-in-up);
+  animation-delay: 400ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-in-hidden {
+    opacity: 1;
+    transform: none;
+  }
+
+  .animate-in-view,
+  .animate-on-load,
+  .animate-on-load-delay-1,
+  .animate-on-load-delay-2,
+  .animate-on-load-delay-3,
+  .animate-on-load-delay-4,
+  .animate-on-load-delay-5 {
+    animation: none;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

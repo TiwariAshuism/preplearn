@@ -28,7 +28,7 @@ export function TemplatePage({
   const pageHref = `/templates/${slug.join("/")}`;
 
   return (
-    <article className="xl:grid xl:grid-cols-[minmax(0,48rem)_220px] xl:gap-10 xl:justify-between">
+    <article className="animate-on-load xl:grid xl:grid-cols-[minmax(0,48rem)_220px] xl:gap-10 xl:justify-between">
       <div className="min-w-0 max-w-3xl">
         <CodeBlockCopy />
         <Breadcrumbs items={breadcrumbs} />
