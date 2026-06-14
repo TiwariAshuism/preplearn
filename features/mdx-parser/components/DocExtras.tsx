@@ -11,23 +11,38 @@ export function TableOfContents({
   return (
     <nav
       aria-label="On this page"
-      className="mb-8 rounded-lg border border-zinc-200 bg-zinc-50/80 p-4 dark:border-zinc-800 dark:bg-zinc-900/40 lg:hidden"
+      className="mb-8 lg:hidden"
     >
-      <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
-        On this page
-      </p>
-      <ul className="mt-2 space-y-1 text-sm">
-        {headings.map((h) => (
-          <li key={h.id} style={{ paddingLeft: h.level === 3 ? "0.75rem" : 0 }}>
-            <a
-              href={`#${h.id}`}
-              className="text-zinc-600 hover:text-emerald-700 dark:text-zinc-400 dark:hover:text-emerald-400"
-            >
-              {h.text}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <details className="group rounded-lg border border-zinc-200 bg-zinc-50/80 dark:border-zinc-800 dark:bg-zinc-900/40">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 marker:content-none">
+          <span className="min-w-0 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+              On this page
+            </span>
+            <span className="ml-1.5 font-normal text-zinc-400">
+              · {headings.length} topics
+            </span>
+          </span>
+          <span
+            className="shrink-0 text-xs font-medium text-emerald-700 transition-transform group-open:rotate-180 dark:text-emerald-400"
+            aria-hidden
+          >
+            ▾
+          </span>
+        </summary>
+        <ul className="max-h-[min(50vh,20rem)] space-y-1 overflow-y-auto border-t border-zinc-200 px-4 py-3 text-sm dark:border-zinc-800">
+          {headings.map((h) => (
+            <li key={h.id} style={{ paddingLeft: h.level === 3 ? "0.75rem" : 0 }}>
+              <a
+                href={`#${h.id}`}
+                className="block rounded-md py-1 text-zinc-600 hover:text-emerald-700 dark:text-zinc-400 dark:hover:text-emerald-400"
+              >
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </details>
     </nav>
   );
 }

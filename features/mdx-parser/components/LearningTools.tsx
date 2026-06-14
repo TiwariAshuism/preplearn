@@ -99,11 +99,20 @@ export function ProgressTracker({
   const completed = phases.filter((p) => done[p.href]).length;
 
   return (
-    <details className="mb-6 rounded-lg border border-zinc-200 bg-zinc-50/80 dark:border-zinc-800 dark:bg-zinc-900/40">
-      <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-zinc-700 dark:text-zinc-300">
-        Progress · {completed}/{phases.length} phases
+    <details className="group mb-6 rounded-lg border border-zinc-200 bg-zinc-50/80 dark:border-zinc-800 dark:bg-zinc-900/40">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 marker:content-none">
+        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+          Progress · {completed}/{phases.length}{" "}
+          {phases.some((p) => /phase\s+\d+/i.test(p.title)) ? "phases" : "sections"}
+        </span>
+        <span
+          className="shrink-0 text-xs font-medium text-emerald-700 transition-transform group-open:rotate-180 dark:text-emerald-400"
+          aria-hidden
+        >
+          ▾
+        </span>
       </summary>
-      <ul className="space-y-1 border-t border-zinc-200 px-4 py-3 dark:border-zinc-800">
+      <ul className="max-h-[min(50vh,16rem)] space-y-1 overflow-y-auto border-t border-zinc-200 px-4 py-3 dark:border-zinc-800">
         {phases.map((phase) => (
           <li key={phase.href} className="flex items-center gap-2 text-sm">
             <input
