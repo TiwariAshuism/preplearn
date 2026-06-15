@@ -115,7 +115,7 @@ export function ProgressTracker({
           ▾
         </span>
       </summary>
-      <ul className="max-h-[min(50vh,16rem)] space-y-1 overflow-y-auto border-t border-zinc-200 px-4 py-3 dark:border-zinc-800">
+      <ul className="mobile-scroll-panel space-y-1 overflow-y-auto border-t border-zinc-200 px-4 py-3 dark:border-zinc-800">
         {phases.map((phase) => (
           <li key={phase.href} className="flex items-center gap-2 text-sm">
             <input

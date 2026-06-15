@@ -64,7 +64,7 @@ function OfflineIndicator({
 
   return (
     <div
-      className="fixed bottom-4 right-4 z-50 max-w-[16rem] rounded-full border border-zinc-200 bg-white/95 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm backdrop-blur dark:border-zinc-700 dark:bg-zinc-900/95 dark:text-zinc-300"
+      className="fixed bottom-[max(1rem,var(--safe-bottom))] right-[max(1rem,var(--safe-right))] z-50 max-w-[min(16rem,calc(100vw-2rem))] rounded-full border border-zinc-200 bg-white/95 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm backdrop-blur min-[390px]:max-w-[18rem] min-[390px]:px-3.5 min-[390px]:py-2 min-[390px]:text-[0.8125rem] dark:border-zinc-700 dark:bg-zinc-900/95 dark:text-zinc-300"
       role="status"
       aria-live="polite"
     >

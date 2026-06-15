@@ -58,12 +58,12 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex animate-fade-in items-start justify-center bg-black/40 p-3 pt-[10vh] motion-reduce:animate-none sm:p-4 sm:pt-[15vh]"
+      className="fixed inset-0 z-[60] flex animate-fade-in items-start justify-center bg-black/40 p-[max(0.75rem,var(--safe-left))] pt-[max(10dvh,var(--safe-top))] motion-reduce:animate-none min-[390px]:p-4 min-[390px]:pt-[12dvh] sm:pt-[15vh]"
       onClick={onClose}
       role="presentation"
     >
       <div
-        className="max-h-[min(80vh,32rem)] w-full max-w-lg overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl animate-scale-in motion-reduce:animate-none dark:border-zinc-700 dark:bg-zinc-900"
+        className="max-h-[min(85dvh,36rem)] w-full max-w-lg overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xl animate-scale-in motion-reduce:animate-none min-[390px]:max-w-xl xl:max-w-2xl dark:border-zinc-700 dark:bg-zinc-900"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"

@@ -35,7 +35,7 @@ export function RoadmapCard({ collection }: RoadmapCardProps) {
   const cleanTitle = cleanRoadmapTitle(collection.title);
 
   return (
-    <article className="group flex h-full flex-col rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-200/60 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-emerald-900/40">
+    <article className="group flex h-full flex-col rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-200/60 hover:shadow-lg min-[390px]:p-6 dark:border-zinc-800 dark:bg-zinc-900/50 dark:hover:border-emerald-900/40">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <span
@@ -56,7 +56,7 @@ export function RoadmapCard({ collection }: RoadmapCardProps) {
         )}
       </div>
 
-      <h3 className="mt-4 text-lg font-semibold leading-snug text-zinc-900 dark:text-zinc-50">
+      <h3 className="mt-4 text-lg font-semibold leading-snug text-zinc-900 min-[390px]:text-xl dark:text-zinc-50">
         <Link
           href={collection.href}
           className="hover:text-emerald-700 dark:hover:text-emerald-400"
@@ -65,7 +65,7 @@ export function RoadmapCard({ collection }: RoadmapCardProps) {
         </Link>
       </h3>
 
-      <p className="mt-2 flex-1 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+      <p className="mt-2 flex-1 text-sm leading-6 text-zinc-600 min-[390px]:text-[0.9375rem] min-[390px]:leading-7 dark:text-zinc-400">
         {collection.description}
       </p>
 

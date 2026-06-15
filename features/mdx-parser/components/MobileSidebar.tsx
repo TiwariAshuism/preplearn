@@ -24,7 +24,7 @@ function SidebarPanel({
 }) {
   return (
     <>
-      <div className="mb-4 hidden lg:block">
+      <div className="mb-4 hidden md:block">
         <SearchTrigger />
       </div>
       <div className="mb-4">
@@ -36,7 +36,7 @@ function SidebarPanel({
         )}
       </div>
       <div
-        className="overflow-y-auto lg:max-h-[calc(100vh-8rem)]"
+        className="overflow-y-auto md:max-h-[calc(100dvh-8rem)]"
         onClick={onNavigate}
       >
         <NavTree tree={navTree} />
@@ -67,14 +67,14 @@ export function MobileSidebar({
   }, [open]);
 
   return (
-    <div className="flex min-h-[calc(100vh-0px)] flex-col lg:flex-row">
-      <div className="sticky top-0 z-40 flex items-center gap-2 border-b border-zinc-200 bg-zinc-50/95 px-3 py-2.5 backdrop-blur-sm lg:hidden dark:border-zinc-800 dark:bg-zinc-950/95">
+    <div className="flex min-h-dvh flex-col md:flex-row">
+      <div className="safe-top sticky top-0 z-40 flex items-center gap-2.5 border-b border-zinc-200 bg-zinc-50/95 px-[max(var(--page-gutter),var(--safe-left))] py-3 backdrop-blur-sm min-[390px]:gap-3 min-[390px]:py-3.5 md:hidden dark:border-zinc-800 dark:bg-zinc-950/95">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-doc-nav"
-          className="inline-flex shrink-0 items-center justify-center rounded-md border border-zinc-200 p-2 text-zinc-700 transition-transform duration-200 active:scale-95 dark:border-zinc-700 dark:text-zinc-300"
+          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-zinc-200 text-zinc-700 transition-transform duration-200 active:scale-95 dark:border-zinc-700 dark:text-zinc-300"
         >
           <span className="sr-only">{open ? "Close menu" : "Open menu"}</span>
           {open ? (
@@ -90,12 +90,12 @@ export function MobileSidebar({
 
         <Link
           href="/"
-          className="flex min-w-0 flex-1 items-center gap-2 truncate"
+          className="flex min-w-0 flex-1 items-center gap-2.5 truncate"
         >
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-emerald-600 text-xs font-bold text-white">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-emerald-600 text-xs font-bold text-white min-[390px]:h-9 min-[390px]:w-9">
             P
           </span>
-          <span className="truncate text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+          <span className="truncate text-sm font-semibold text-zinc-900 min-[390px]:text-base dark:text-zinc-50">
             PrepLearn
           </span>
         </Link>
@@ -107,18 +107,18 @@ export function MobileSidebar({
         <button
           type="button"
           aria-label="Close menu"
-          className="fixed inset-0 z-40 bg-black/40 animate-fade-in motion-reduce:animate-none lg:hidden"
+          className="fixed inset-0 z-40 bg-black/40 animate-fade-in motion-reduce:animate-none md:hidden"
           onClick={() => setOpen(false)}
         />
       )}
 
       <aside
         id="mobile-doc-nav"
-        className={`fixed inset-y-0 left-0 z-50 flex w-[min(100vw,18rem)] flex-col border-r border-zinc-200 bg-zinc-50 px-4 py-6 shadow-xl transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none dark:border-zinc-800 dark:bg-zinc-950 lg:static lg:z-auto lg:block lg:w-72 lg:shrink-0 lg:translate-x-0 lg:border-r lg:border-zinc-200 lg:bg-zinc-50 lg:px-4 lg:py-6 lg:shadow-none dark:lg:border-zinc-800 dark:lg:bg-zinc-950 ${
-          open ? "translate-x-0" : "-translate-x-full pointer-events-none lg:pointer-events-auto"
+        className={`safe-top fixed inset-y-0 left-0 z-50 flex w-[min(92vw,20rem)] flex-col border-r border-zinc-200 bg-zinc-50 px-4 py-6 shadow-xl transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none min-[390px]:w-[min(88vw,22rem)] min-[428px]:px-5 dark:border-zinc-800 dark:bg-zinc-950 md:static md:z-auto md:block md:w-64 md:shrink-0 md:translate-x-0 md:border-r md:border-zinc-200 md:bg-zinc-50 md:px-4 md:py-6 md:shadow-none lg:w-72 xl:w-80 xl:px-5 2xl:w-[21rem] 2xl:px-6 dark:md:border-zinc-800 dark:md:bg-zinc-950 ${
+          open ? "translate-x-0" : "-translate-x-full pointer-events-none md:pointer-events-auto"
         }`}
       >
-        <div className="min-h-0 flex-1 overflow-y-auto lg:pt-0">
+        <div className="min-h-0 flex-1 overflow-y-auto md:pt-0">
           <SidebarPanel
             navTree={navTree}
             syncLabel={syncLabel}
@@ -129,9 +129,11 @@ export function MobileSidebar({
 
       <main
         key={pathname}
-        className="min-w-0 flex-1 overflow-x-hidden px-4 py-6 animate-on-load sm:px-6 sm:py-8 lg:px-10"
+        className="page-gutter-x min-w-0 flex-1 overflow-x-hidden py-6 animate-on-load min-[390px]:py-7 min-[428px]:py-8 md:px-8 lg:px-10 xl:px-12 2xl:px-16"
       >
-        {children}
+        <div className="doc-reading-shell">
+          {children}
+        </div>
       </main>
     </div>
   );

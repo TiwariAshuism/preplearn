@@ -5,6 +5,52 @@
   --background: #ffffff;
   --foreground: #171717;
   --content-width: 48rem;
+  --site-max: 72rem;
+  --page-gutter: 1rem;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+@media (min-width: 390px) {
+  :root {
+    --page-gutter: 1.25rem;
+  }
+}
+
+@media (min-width: 428px) {
+  :root {
+    --page-gutter: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-gutter: 1.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --page-gutter: 2rem;
+    --content-width: 52rem;
+    --site-max: 80rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    --page-gutter: 2.5rem;
+    --content-width: 56rem;
+    --site-max: 90rem;
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --site-max: 100rem;
+  }
 }
 
 @theme inline {
@@ -127,6 +173,62 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
+.page-gutter-x {
+  padding-left: max(var(--page-gutter), var(--safe-left));
+  padding-right: max(var(--page-gutter), var(--safe-right));
+}
+
+.safe-top {
+  padding-top: var(--safe-top);
+}
+
+.safe-bottom {
+  padding-bottom: var(--safe-bottom);
+}
+
+.site-container {
+  width: 100%;
+  max-width: var(--site-max, 72rem);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.doc-reading-shell {
+  width: 100%;
+  max-width: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 1280px) {
+  .doc-reading-shell {
+    max-width: 72rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .doc-reading-shell {
+    max-width: 88rem;
+  }
+}
+
+.mobile-scroll-panel {
+  max-height: min(50vh, 16rem);
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 390px) {
+  .mobile-scroll-panel {
+    max-height: min(55dvh, 20rem);
+  }
+}
+
+@media (min-width: 428px) and (max-width: 1023px) {
+  .mobile-scroll-panel {
+    max-height: min(60dvh, 24rem);
+  }
+}
+
 .mdx-prose {
   @apply prose prose-zinc w-full max-w-3xl dark:prose-invert;
   @apply prose-headings:scroll-mt-24 prose-headings:tracking-tight;
@@ -150,7 +252,7 @@ body {
   overflow-x: auto;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 389px) {
   .mdx-prose :where(table) {
     font-size: 0.75rem;
     line-height: 1.35;
@@ -164,6 +266,49 @@ body {
   .mdx-prose :where(h1) {
     font-size: 1.5rem;
     line-height: 1.25;
+  }
+}
+
+@media (min-width: 390px) and (max-width: 767px) {
+  .mdx-prose {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+
+  .mdx-prose :where(h1) {
+    font-size: 1.75rem;
+    line-height: 1.2;
+  }
+
+  .mdx-prose :where(h2) {
+    font-size: 1.375rem;
+  }
+
+  .mdx-prose :where(table) {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  .mdx-prose :where(th, td) {
+    padding: 0.4rem 0.6rem;
+    vertical-align: top;
+  }
+}
+
+@media (min-width: 1280px) {
+  .mdx-prose {
+    max-width: none;
+  }
+
+  .mdx-prose :where(pre) {
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .mdx-prose {
+    font-size: 1.0625rem;
+    line-height: 1.75;
   }
 }
 

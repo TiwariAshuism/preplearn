@@ -9,7 +9,7 @@ export default function Home() {
   const content = getHomeContent();
 
   return (
-    <div className="flex min-h-full flex-col bg-white dark:bg-zinc-950">
+    <div className="flex min-h-dvh flex-col bg-white dark:bg-zinc-950">
       <SiteHeader />
       <main className="flex-1">
         <HomeHero content={content} />

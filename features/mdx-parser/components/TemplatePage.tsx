@@ -28,8 +28,8 @@ export function TemplatePage({
   const pageHref = `/templates/${slug.join("/")}`;
 
   return (
-    <article className="animate-on-load xl:grid xl:grid-cols-[minmax(0,48rem)_220px] xl:gap-10 xl:justify-between">
-      <div className="min-w-0 max-w-3xl">
+    <article className="animate-on-load w-full lg:grid lg:grid-cols-[minmax(0,1fr)_12rem] lg:gap-8 xl:grid-cols-[minmax(0,52rem)_14rem] xl:gap-10 2xl:grid-cols-[minmax(0,56rem)_16rem] 2xl:gap-12">
+      <div className="min-w-0 w-full">
         <CodeBlockCopy />
         <Breadcrumbs items={breadcrumbs} />
 
@@ -52,7 +52,7 @@ export function TemplatePage({
 
         <header className="mb-6 border-b border-zinc-200 pb-6 dark:border-zinc-800">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <h1 className="text-2xl font-bold tracking-tight text-balance text-zinc-900 sm:text-3xl dark:text-zinc-50">
+            <h1 className="text-2xl font-bold tracking-tight text-balance text-zinc-900 min-[390px]:text-[1.75rem] min-[428px]:text-3xl sm:text-3xl xl:text-4xl dark:text-zinc-50">
               {frontmatter.icon ? `${frontmatter.icon} ` : ""}
               {frontmatter.title}
             </h1>
@@ -82,8 +82,8 @@ export function TemplatePage({
         <PrevNextNav prev={pageContext.prev} next={pageContext.next} />
       </div>
 
-      <aside className="hidden xl:block">
-        <div className="sticky top-8">
+      <aside className="hidden lg:block">
+        <div className="sticky top-8 max-h-[calc(100dvh-4rem)] overflow-y-auto xl:top-10 2xl:top-12">
           <DocSidebarToc headings={pageContext.toc} />
         </div>
       </aside>

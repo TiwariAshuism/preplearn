@@ -26,7 +26,7 @@ const steps = [
 export function HowItWorks() {
   return (
     <section className="border-y border-zinc-200 bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/30">
-      <div className="mx-auto max-w-6xl px-6 py-20">
+      <div className="page-gutter-x site-container py-16 min-[390px]:py-20 min-[428px]:py-20 md:py-20 xl:py-24">
         <AnimateIn>
           <p className="text-sm font-medium uppercase tracking-wider text-zinc-500">
             How it works

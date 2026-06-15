@@ -30,7 +30,7 @@ export function TableOfContents({
             ▾
           </span>
         </summary>
-        <ul className="max-h-[min(50vh,20rem)] space-y-1 overflow-y-auto border-t border-zinc-200 px-4 py-3 text-sm dark:border-zinc-800">
+        <ul className="mobile-scroll-panel space-y-1 overflow-y-auto border-t border-zinc-200 px-4 py-3 text-sm min-[390px]:text-[0.9375rem] dark:border-zinc-800">
           {headings.map((h) => (
             <li key={h.id} style={{ paddingLeft: h.level === 3 ? "0.75rem" : 0 }}>
               <a
@@ -57,7 +57,7 @@ export function DocSidebarToc({
   return (
     <nav
       aria-label="Table of contents"
-      className="hidden xl:block"
+      className="hidden lg:block"
     >
       <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
         On this page
@@ -90,7 +90,7 @@ export function PrevNextNav({
   return (
     <nav
       aria-label="Previous and next"
-      className="mt-10 grid gap-3 border-t border-zinc-200 pt-8 dark:border-zinc-800 sm:grid-cols-2"
+      className="mt-10 grid gap-3 border-t border-zinc-200 pt-8 dark:border-zinc-800 min-[420px]:grid-cols-2"
     >
       {prev ? (
         <Link
@@ -128,7 +128,7 @@ export function RelatedPages({ pages }: { pages: PageLink[] }) {
       <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
         Related
       </h2>
-      <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+      <ul className="mt-3 grid gap-2 min-[420px]:grid-cols-2 xl:grid-cols-3">
         {pages.map((p) => (
           <li key={p.href}>
             <Link
