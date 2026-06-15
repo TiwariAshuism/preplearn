@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { getAllSlugs, slugToFilePath } from "../features/mdx-parser/lib/content";
 import { slugToHref, getCollectionRootForSlug } from "../features/mdx-parser/lib/collection";
+import { trimCollectionHubBody } from "../features/mdx-parser/lib/hub-content";
 import type { SearchEntry } from "../features/mdx-parser/lib/search";
 
 const OUT_PATH = path.join(process.cwd(), "public", "search-index.json");
@@ -32,12 +33,21 @@ function buildSearchIndex(): SearchEntry[] {
       content.match(/^#\s+(.+)$/m)?.[1]?.trim() ||
       slug.join("/");
 
+    const children = Array.isArray(data.children)
+      ? data.children.filter((c): c is string => typeof c === "string")
+      : [];
+    const isHub =
+      filePath.endsWith(`${path.sep}index.md`) &&
+      data.parent === null &&
+      children.length > 0;
+    const body = isHub ? trimCollectionHubBody(content, children) : content;
+
     const root = getCollectionRootForSlug(slug);
 
     entries.push({
       title,
       href: slugToHref(slug),
-      excerpt: excerpt(content),
+      excerpt: excerpt(body),
       collection: root?.title ?? title,
     });
   }

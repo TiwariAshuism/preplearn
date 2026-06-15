@@ -54,8 +54,22 @@ export function inferRoadmapCategory(
   }
 
   if (
+    slug.includes("docker") ||
+    slug.includes("kubernetes") ||
+    slug.includes("aws") ||
+    slug.includes("floci") ||
+    slug.includes("blockchain") ||
+    slug.includes("quant") ||
+    slug.includes("devops") ||
+    slug.includes("infra")
+  ) {
+    return "backend";
+  }
+
+  if (
     slug.includes("backend-engineering") ||
-    (text.includes("backend") && slug.includes("90-day"))
+    slug.includes("30-day") ||
+    (text.includes("backend") && (slug.includes("90-day") || slug.includes("roadmap")))
   ) {
     return "backend";
   }

@@ -7,6 +7,7 @@ import {
   getCollectionRootForSlug,
   isCollectionRoot,
 } from "./collection";
+import { trimCollectionHubBody } from "./hub-content";
 import type {
   Breadcrumb,
   NavNode,
@@ -522,9 +523,18 @@ export function getPageBySlug(slug: string[]): PageData | null {
 
   const collectionRoot = getCollectionRootForSlug(parsed.slug);
   const collectionNav = getCollectionNavForSlug(parsed.slug);
+
+  const isCollectionHub =
+    path.basename(filePath) === "index.md" &&
+    isCollectionRoot(parsed, filePath) &&
+    parsed.frontmatter.children.length > 0;
+  const displayContent = isCollectionHub
+    ? trimCollectionHubBody(parsed.content, parsed.frontmatter.children)
+    : parsed.content;
+
   const pageContext: PageContext = buildPageContext(
     parsed.frontmatter,
-    parsed.content,
+    displayContent,
     parsed.slug,
     collectionRoot?.slug ?? (parsed.slug.length > 0 ? [parsed.slug[0]] : []),
     collectionRoot?.title ?? parsed.frontmatter.title,
@@ -534,7 +544,7 @@ export function getPageBySlug(slug: string[]): PageData | null {
 
   return {
     frontmatter: parsed.frontmatter,
-    content: parsed.content,
+    content: displayContent,
     children: sortNavNodes(childNodes),
     breadcrumbs,
     slug: parsed.slug,

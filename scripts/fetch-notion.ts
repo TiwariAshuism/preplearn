@@ -6,6 +6,7 @@ import path from "path";
 import slugify from "slugify";
 
 import { upsertSyncRoot } from "../features/mdx-parser/lib/sync-meta";
+import { trimCollectionHubBody } from "../features/mdx-parser/lib/hub-content";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 const RATE_LIMIT_MS = 333;
@@ -210,9 +211,15 @@ function writePageTree(
 
   const fullPath = path.join(CONTENT_DIR, relativePath);
   fs.mkdirSync(path.dirname(fullPath), { recursive: true });
+  const childSlugs = node.children.map((c) => c.slug);
+  const markdown =
+    childSlugs.length > 0
+      ? trimCollectionHubBody(node.markdown, childSlugs)
+      : node.markdown;
+
   fs.writeFileSync(
     fullPath,
-    buildFrontmatter(node, notionRootId) + node.markdown,
+    buildFrontmatter(node, notionRootId) + markdown,
   );
 
   let written = 1;
@@ -238,9 +245,15 @@ function writeNotionRoot(rootNode: NotionPageNode, rootPageId: string): number {
     (!existingRootId || normalizeId(existingRootId) === normalizeId(rootPageId));
 
   if (canUseContentIndex) {
+    const childSlugs = rootNode.children.map((c) => c.slug);
+    const markdown =
+      childSlugs.length > 0
+        ? trimCollectionHubBody(rootNode.markdown, childSlugs)
+        : rootNode.markdown;
+
     fs.writeFileSync(
       rootIndexPath,
-      buildFrontmatter(rootNode, rootPageId) + rootNode.markdown,
+      buildFrontmatter(rootNode, rootPageId) + markdown,
     );
     written++;
 
