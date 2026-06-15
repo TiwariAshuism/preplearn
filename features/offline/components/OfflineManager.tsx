@@ -33,7 +33,13 @@ function OfflineIndicator({ progress }: { progress: OfflineCacheProgress | null 
       progress.total > 0
         ? Math.round((progress.cached / progress.total) * 100)
         : 0;
-    label = `Updating offline library… ${pct}%`;
+    const kind =
+      progress.label === "assets"
+        ? "UI assets"
+        : progress.label === "content"
+          ? "content"
+          : "library";
+    label = `Updating offline ${kind}… ${pct}%`;
   } else if (online && progress?.status === "ready") {
     label = "Offline library updated";
   } else if (online && progress?.status === "skipped") {
