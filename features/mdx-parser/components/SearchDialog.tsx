@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { loadSearchIndex, refreshSearchIndexIfNeeded } from "@/features/offline/lib/search-cache";
 import type { SearchEntry } from "../lib/search";
 
 type SearchDialogProps = {
@@ -16,13 +17,18 @@ export function SearchDialog({ open, onClose }: SearchDialogProps) {
 
   useEffect(() => {
     if (!open || loaded) return;
-    fetch("/search-index.json")
-      .then((r) => r.json())
-      .then((data: SearchEntry[]) => {
+    loadSearchIndex()
+      .then((data) => {
         setIndex(data);
         setLoaded(true);
       })
       .catch(() => setLoaded(true));
+
+    if (typeof navigator !== "undefined" && navigator.onLine) {
+      refreshSearchIndexIfNeeded().then((fresh) => {
+        if (fresh.length > 0) setIndex(fresh);
+      });
+    }
   }, [open, loaded]);
 
   useEffect(() => {

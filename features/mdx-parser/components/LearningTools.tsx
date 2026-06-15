@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { getUserData, setUserData } from "@/features/offline/lib/user-data";
 import type { PageLink } from "../lib/types";
 
 type ChecklistProps = {
@@ -11,20 +12,23 @@ type ChecklistProps = {
 
 export function Checklist({ items, storageKey }: ChecklistProps) {
   const [checked, setChecked] = useState<Record<number, boolean>>({});
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(storageKey);
-      if (raw) setChecked(JSON.parse(raw) as Record<number, boolean>);
-    } catch {
-      /* ignore */
-    }
+    let cancelled = false;
+    getUserData<Record<number, boolean>>(storageKey).then((data) => {
+      if (!cancelled && data) setChecked(data);
+      if (!cancelled) setLoaded(true);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [storageKey]);
 
-  function toggle(index: number) {
+  async function toggle(index: number) {
     setChecked((prev) => {
       const next = { ...prev, [index]: !prev[index] };
-      localStorage.setItem(storageKey, JSON.stringify(next));
+      void setUserData(storageKey, next);
       return next;
     });
   }
@@ -36,7 +40,7 @@ export function Checklist({ items, storageKey }: ChecklistProps) {
       <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
         Completion checklist
       </h2>
-      <ul className="mt-3 space-y-2">
+      <ul className="mt-3 space-y-2" aria-busy={!loaded}>
         {items.map((item, i) => (
           <li key={item} className="flex items-start gap-2 text-sm">
             <input
@@ -73,23 +77,22 @@ export function ProgressTracker({
   currentHref,
 }: ProgressTrackerProps) {
   const [done, setDone] = useState<Record<string, boolean>>({});
+  const progressKey = `preplearn:progress:${collectionKey}`;
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(`preplearn:progress:${collectionKey}`);
-      if (raw) setDone(JSON.parse(raw) as Record<string, boolean>);
-    } catch {
-      /* ignore */
-    }
-  }, [collectionKey]);
+    let cancelled = false;
+    getUserData<Record<string, boolean>>(progressKey).then((data) => {
+      if (!cancelled && data) setDone(data);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [progressKey]);
 
-  function toggle(href: string) {
+  async function toggle(href: string) {
     setDone((prev) => {
       const next = { ...prev, [href]: !prev[href] };
-      localStorage.setItem(
-        `preplearn:progress:${collectionKey}`,
-        JSON.stringify(next),
-      );
+      void setUserData(progressKey, next);
       return next;
     });
   }
