@@ -14,7 +14,7 @@ export function CollectionGrid({
     <RoadmapCatalog
       collections={collections}
       standalonePages={standalonePages}
-      showFilters={false}
+      showFilters
       showHeader
     />
   );

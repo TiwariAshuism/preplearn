@@ -3,7 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { getAllSlugs, resolveChildSlugParts } from "@/features/mdx-parser/lib/content";
 import { extractEstimatedDays } from "@/features/mdx-parser/lib/page-context";
-import { inferRoadmapCategory, type RoadmapCategory } from "./categories";
+import { resolveRoadmapCategory, type RoadmapCategory } from "./categories";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
@@ -210,7 +210,7 @@ function buildCollectionFromPath(
     description: extractDescription(content),
     href: slugToHref(slug),
     slugKey,
-    category: inferRoadmapCategory(slugKey, title),
+    category: resolveRoadmapCategory(slugKey, title, frontmatter.category),
     icon: typeof frontmatter.icon === "string" ? frontmatter.icon : null,
     order: typeof frontmatter.order === "number" ? frontmatter.order : 0,
     childCount: children.length,

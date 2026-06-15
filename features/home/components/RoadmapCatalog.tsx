@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import type { HomeCollection, HomePageLink } from "../lib/content";
 import {
   ROADMAP_CATEGORY_FILTERS,
+  buildCategoryCounts,
   type RoadmapCategoryFilter,
 } from "../lib/categories";
 import { AnimateIn } from "@/features/ui/components/AnimateIn";
@@ -31,19 +32,10 @@ export function RoadmapCatalog({
     return collections.filter((c) => c.category === category);
   }, [collections, category]);
 
-  const categoryCounts = useMemo(() => {
-    const counts: Record<RoadmapCategoryFilter, number> = {
-      all: collections.length,
-      backend: 0,
-      "system-design": 0,
-      mobile: 0,
-      reference: 0,
-    };
-    for (const c of collections) {
-      counts[c.category] += 1;
-    }
-    return counts;
-  }, [collections]);
+  const categoryCounts = useMemo(
+    () => buildCategoryCounts(collections),
+    [collections],
+  );
 
   if (collections.length === 0 && standalonePages.length === 0) {
     return (

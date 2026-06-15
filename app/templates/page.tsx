@@ -8,7 +8,7 @@ import { SiteFooter } from "@/features/home/components/SiteFooter";
 export const metadata: Metadata = {
   title: "All Roadmaps | PrepLearn",
   description:
-    "Browse backend, system design, mobile, and deep-dive learning roadmaps.",
+    "Browse backend, system design, mobile, DevOps, blockchain, quant, and deep-dive learning roadmaps.",
 };
 
 export default function TemplatesCatalogPage() {
@@ -31,7 +31,8 @@ export default function TemplatesCatalogPage() {
             </h1>
             <p className="animate-on-load-delay-2 mt-2 max-w-2xl text-zinc-600 dark:text-zinc-400">
               Pick a path that matches your goal — backend fundamentals, system
-              design interviews, mobile development, or deep technical notes.
+              design, mobile, DevOps & cloud, blockchain, quant, or deep
+              technical notes.
               Each roadmap opens with its own focused navigation.
             </p>
           </div>

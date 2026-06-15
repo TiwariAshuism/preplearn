@@ -1,4 +1,4 @@
-import { getKV, setKV } from "./db";
+import { getKV, setKV, deleteKV } from "./db";
 
 const CONTENT_HASH_KEY = "meta:offline-content-hash";
 const ASSETS_HASH_KEY = "meta:offline-assets-hash";
@@ -24,6 +24,12 @@ type StoredHashes = {
   assetsHash?: string;
 };
 
+type CacheStats = {
+  pageCount: number;
+};
+
+const MIN_CACHED_PAGES_RATIO = 0.9;
+
 export async function getStoredHashes(): Promise<StoredHashes> {
   const [contentHash, assetsHash] = await Promise.all([
     getKV<string>(CONTENT_HASH_KEY),
@@ -39,6 +45,13 @@ export async function setStoredHashes(
   await Promise.all([
     setKV(CONTENT_HASH_KEY, contentHash),
     setKV(ASSETS_HASH_KEY, assetsHash),
+  ]);
+}
+
+export async function clearStoredHashes(): Promise<void> {
+  await Promise.all([
+    deleteKV(CONTENT_HASH_KEY),
+    deleteKV(ASSETS_HASH_KEY),
   ]);
 }
 
@@ -58,42 +71,35 @@ export async function registerServiceWorker(): Promise<ServiceWorkerRegistration
   }
 
   try {
-    return await navigator.serviceWorker.register("/sw.js", { scope: "/" });
+    const registration = await navigator.serviceWorker.register("/sw.js", {
+      scope: "/",
+    });
+    await navigator.serviceWorker.ready;
+    return registration;
   } catch {
     return null;
   }
 }
 
-function waitForController(): Promise<ServiceWorker | null> {
-  return new Promise((resolve) => {
-    if (navigator.serviceWorker.controller) {
-      resolve(navigator.serviceWorker.controller);
-      return;
-    }
-
-    const timeout = setTimeout(() => resolve(null), 5000);
-    navigator.serviceWorker.addEventListener(
-      "controllerchange",
-      () => {
-        clearTimeout(timeout);
-        resolve(navigator.serviceWorker.controller);
-      },
-      { once: true },
-    );
-  });
+async function getActiveWorker(): Promise<ServiceWorker | null> {
+  await navigator.serviceWorker.ready;
+  const registration = await navigator.serviceWorker.getRegistration();
+  return registration?.active ?? navigator.serviceWorker.controller;
 }
 
 function postMessage<T>(message: object): Promise<T> {
   return new Promise(async (resolve, reject) => {
-    const controller = await waitForController();
-    if (!controller) {
-      reject(new Error("No service worker controller"));
+    const worker = await getActiveWorker();
+    if (!worker) {
+      reject(new Error("No active service worker"));
       return;
     }
 
     const channel = new MessageChannel();
-    channel.port1.onmessage = (e) => resolve(e.data as T);
-    controller.postMessage(message, [channel.port2]);
+    channel.port1.onmessage = (event) => resolve(event.data as T);
+    channel.port1.onmessageerror = () =>
+      reject(new Error("Service worker message error"));
+    worker.postMessage(message, [channel.port2]);
   });
 }
 
@@ -105,8 +111,39 @@ async function syncVersionsWithSw(manifest: OfflineManifest): Promise<void> {
       assetsHash: manifest.assetsHash,
     });
   } catch {
-    /* SW not ready */
+    /* SW not ready yet */
   }
+}
+
+export async function getOfflineCacheStats(
+  contentHash?: string,
+): Promise<CacheStats | null> {
+  try {
+    return await postMessage<CacheStats>({
+      type: "GET_CACHE_STATS",
+      contentHash,
+    });
+  } catch {
+    return null;
+  }
+}
+
+async function isCacheComplete(
+  manifest: OfflineManifest,
+  stored: StoredHashes,
+): Promise<boolean> {
+  if (
+    stored.contentHash !== manifest.contentHash ||
+    stored.assetsHash !== manifest.assetsHash
+  ) {
+    return false;
+  }
+
+  const stats = await getOfflineCacheStats(manifest.contentHash);
+  if (!stats) return false;
+
+  const minimum = Math.max(3, Math.floor(manifest.pageCount * MIN_CACHED_PAGES_RATIO));
+  return stats.pageCount >= minimum;
 }
 
 async function precacheUrls(
@@ -119,11 +156,12 @@ async function precacheUrls(
   const batchSize = 8;
   let done = progressBase?.cached ?? 0;
   const total = progressBase?.total ?? urls.length;
+  let batchFailures = 0;
 
   for (let i = 0; i < urls.length; i += batchSize) {
     const batch = urls.slice(i, i + batchSize);
     try {
-      const result = await postMessage<{ cached: number }>({
+      const result = await postMessage<{ cached: number; total: number }>({
         type: "PRECACHE_BATCH",
         urls: batch,
         bucket,
@@ -131,8 +169,11 @@ async function precacheUrls(
         assetsHash: manifest.assetsHash,
       });
       done += result.cached ?? 0;
+      if ((result.cached ?? 0) === 0 && batch.length > 0) {
+        batchFailures++;
+      }
     } catch {
-      /* continue */
+      batchFailures++;
     }
 
     onProgress?.({
@@ -141,6 +182,8 @@ async function precacheUrls(
       status: "caching",
       label: bucket === "pages" ? "content" : "assets",
     });
+
+    if (batchFailures >= 3) break;
 
     if (
       (navigator as Navigator & { connection?: { saveData?: boolean } })
@@ -159,28 +202,34 @@ async function precacheUrls(
  */
 export async function syncOfflineCacheIfNeeded(
   onProgress?: (progress: OfflineCacheProgress) => void,
-): Promise<{ updated: boolean }> {
+): Promise<{ updated: boolean; ready: boolean }> {
   const manifest = await fetchOfflineManifest();
   if (!manifest?.contentHash || !manifest?.assetsHash) {
     onProgress?.({ total: 0, cached: 0, status: "error" });
-    return { updated: false };
+    return { updated: false, ready: false };
   }
 
   const stored = await getStoredHashes();
-  const contentChanged = stored.contentHash !== manifest.contentHash;
-  const assetsChanged = stored.assetsHash !== manifest.assetsHash;
-
-  if (!contentChanged && !assetsChanged) {
-    onProgress?.({
-      total: manifest.pageCount,
-      cached: manifest.pageCount,
-      status: "skipped",
-    });
-    await syncVersionsWithSw(manifest);
-    return { updated: false };
-  }
+  let contentChanged = stored.contentHash !== manifest.contentHash;
+  let assetsChanged = stored.assetsHash !== manifest.assetsHash;
 
   await syncVersionsWithSw(manifest);
+
+  if (!contentChanged && !assetsChanged) {
+    const ready = await isCacheComplete(manifest, stored);
+    if (ready) {
+      onProgress?.({
+        total: manifest.pageCount,
+        cached: manifest.pageCount,
+        status: "skipped",
+      });
+      return { updated: false, ready: true };
+    }
+
+    await clearStoredHashes();
+    contentChanged = true;
+    assetsChanged = true;
+  }
 
   const contentUrls = [...manifest.pages, ...manifest.contentAssets];
   const assetUrls = manifest.buildAssets;
@@ -220,10 +269,20 @@ export async function syncOfflineCacheIfNeeded(
     });
   }
 
-  await setStoredHashes(manifest.contentHash, manifest.assetsHash);
-  onProgress?.({ total: totalWork, cached: totalWork, status: "ready" });
+  const ready = await isCacheComplete(manifest, {
+    contentHash: manifest.contentHash,
+    assetsHash: manifest.assetsHash,
+  });
 
-  return { updated: true };
+  if (ready) {
+    await setStoredHashes(manifest.contentHash, manifest.assetsHash);
+    onProgress?.({ total: totalWork, cached: totalWork, status: "ready" });
+    return { updated: true, ready: true };
+  }
+
+  await clearStoredHashes();
+  onProgress?.({ total: totalWork, cached: completed, status: "error" });
+  return { updated: false, ready: false };
 }
 
 export function isOnline(): boolean {
