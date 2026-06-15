@@ -1,5 +1,5 @@
 {
-  "lastSyncedAt": "2026-06-15T06:59:06.174Z",
+  "lastSyncedAt": "2026-06-15T07:00:30.364Z",
   "roots": [
     {
       "id": "36bda883bddd817a96b3ccec274f3003",
@@ -28,6 +28,13 @@
       "slug": "30-day-docker-kubernetes-roadmap",
       "pageCount": 5,
       "syncedAt": "2026-06-15T06:58:19.007Z"
+    },
+    {
+      "id": "37dda883bddd812c8b27d0594933ab2b",
+      "title": "📈 Quant Analyst Roadmap — Beginner to Advanced",
+      "slug": "quant-analyst-roadmap-beginner-to-advanced",
+      "pageCount": 6,
+      "syncedAt": "2026-06-15T07:00:30.364Z"
     },
     {
       "id": "35ada883bddd81d9ab0ef4abfbd4114b",
