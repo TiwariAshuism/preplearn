@@ -6,7 +6,7 @@ notionId: "35ada883bddd81d9ab0ef4abfbd4114b"
 notionRootId: "35ada883bddd81d9ab0ef4abfbd4114b"
 parent: null
 children: ["phase-5-expert-androidkmp-days-76-90","phase-4-kotlin-multiplatform-kmp-days-56-75","phase-3-architecture-and-patterns-days-36-55","phase-2-android-core-days-16-35","phase-1-kotlin-foundations-days-1-15"]
-order: 3
+order: 4
 icon: "📦"
 cover: null
 ---

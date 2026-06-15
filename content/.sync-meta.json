@@ -1,6 +1,41 @@
 {
-  "lastSyncedAt": "2026-06-14T13:18:58.183Z",
+  "lastSyncedAt": "2026-06-15T06:59:06.174Z",
   "roots": [
+    {
+      "id": "36bda883bddd817a96b3ccec274f3003",
+      "title": "☁️ 30-Day AWS + Floci Roadmap — Go Backend Engineer",
+      "slug": "30-day-aws-floci-roadmap-go-backend-engineer",
+      "pageCount": 5,
+      "syncedAt": "2026-06-15T06:56:57.148Z"
+    },
+    {
+      "id": "362da883bddd81cd8c6fd78fe5fec86f",
+      "title": "⛓️ Blockchain Developer Roadmap — Beginner to Advanced",
+      "slug": "blockchain-developer-roadmap-beginner-to-advanced",
+      "pageCount": 6,
+      "syncedAt": "2026-06-15T06:59:06.174Z"
+    },
+    {
+      "id": "36eda883bddd81b49b29d6afa6a9119c",
+      "title": "🌐 Kotlin Multiplatform (KMP) — Complete Roadmap",
+      "slug": "kotlin-multiplatform-kmp-complete-roadmap",
+      "pageCount": 7,
+      "syncedAt": "2026-06-15T06:54:04.590Z"
+    },
+    {
+      "id": "36cda883bddd812fb940e5b8d2d2f3a9",
+      "title": "🐳 30-Day Docker + Kubernetes Roadmap",
+      "slug": "30-day-docker-kubernetes-roadmap",
+      "pageCount": 5,
+      "syncedAt": "2026-06-15T06:58:19.007Z"
+    },
+    {
+      "id": "35ada883bddd81d9ab0ef4abfbd4114b",
+      "title": "📦 90-Day Android/Kotlin/KMP Roadmap",
+      "slug": "90-day-androidkotlinkmp-roadmap",
+      "pageCount": 6,
+      "syncedAt": "2026-06-15T06:56:16.678Z"
+    },
     {
       "id": "35ada883bddd813694d3fa44eb7ceee9",
       "title": "🧩 90-Day LLD Roadmap — Low-Level System Design",
