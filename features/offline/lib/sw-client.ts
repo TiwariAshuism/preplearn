@@ -1,4 +1,5 @@
 import { getKV, setKV, deleteKV } from "./db";
+import { isOfflineEnabled } from "./env";
 
 const CONTENT_HASH_KEY = "meta:offline-content-hash";
 const ASSETS_HASH_KEY = "meta:offline-assets-hash";
@@ -66,6 +67,8 @@ export async function fetchOfflineManifest(): Promise<OfflineManifest | null> {
 }
 
 export async function registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
+  if (!isOfflineEnabled()) return null;
+
   if (typeof window === "undefined" || !("serviceWorker" in navigator)) {
     return null;
   }
@@ -203,6 +206,10 @@ async function precacheUrls(
 export async function syncOfflineCacheIfNeeded(
   onProgress?: (progress: OfflineCacheProgress) => void,
 ): Promise<{ updated: boolean; ready: boolean }> {
+  if (!isOfflineEnabled()) {
+    return { updated: false, ready: false };
+  }
+
   const manifest = await fetchOfflineManifest();
   if (!manifest?.contentHash || !manifest?.assetsHash) {
     onProgress?.({ total: 0, cached: 0, status: "error" });

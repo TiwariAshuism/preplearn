@@ -9,6 +9,7 @@ import {
   fetchOfflineManifest,
   type OfflineCacheProgress,
 } from "../lib/sw-client";
+import { isOfflineEnabled, teardownOfflineClient } from "../lib/env";
 import { refreshSearchIndexIfNeeded } from "../lib/search-cache";
 import { migrateFromLocalStorage } from "../lib/user-data";
 
@@ -122,6 +123,11 @@ export function OfflineManager() {
     }
 
     async function init() {
+      if (!isOfflineEnabled()) {
+        await teardownOfflineClient();
+        return;
+      }
+
       await migrateFromLocalStorage();
 
       const reg = await registerServiceWorker();

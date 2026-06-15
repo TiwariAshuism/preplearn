@@ -235,6 +235,15 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
+  // Never intercept Next.js dev HMR or turbopack sockets.
+  if (
+    url.pathname.includes("/_next/webpack-hmr") ||
+    url.pathname.includes("/_next/turbopack-hmr") ||
+    url.searchParams.has("__nextDevClientId")
+  ) {
+    return;
+  }
+
   event.respondWith(handleRequest(request));
 });
 
