@@ -1,5 +1,5 @@
 {
-  "lastSyncedAt": "2026-06-15T07:15:18.963Z",
+  "lastSyncedAt": "2026-06-23T10:48:42.135Z",
   "roots": [
     {
       "id": "36bda883bddd817a96b3ccec274f3003",
@@ -42,6 +42,27 @@
       "slug": "90-day-androidkotlinkmp-roadmap",
       "pageCount": 6,
       "syncedAt": "2026-06-15T06:56:16.678Z"
+    },
+    {
+      "id": "380da883bddd81e1abc7c118d4e018d9",
+      "title": "🗃️ Storage Engineering Interview Roadmap — 120 Days",
+      "slug": "storage-engineering-interview-roadmap-120-days",
+      "pageCount": 9,
+      "syncedAt": "2026-06-23T10:48:42.135Z"
+    },
+    {
+      "id": "384da883bddd81438d21ca87e13a859d",
+      "title": "🧠 90-Day AI / LLM Engineering Roadmap — Beginner to Advanced",
+      "slug": "90-day-ai-llm-engineering-roadmap-beginner-to-advanced",
+      "pageCount": 7,
+      "syncedAt": "2026-06-23T10:41:27.313Z"
+    },
+    {
+      "id": "383da883bddd81feae11fbbfc249f450",
+      "title": "🧩 90-Day DSA Roadmap — Beginner to Advanced",
+      "slug": "90-day-dsa-roadmap-beginner-to-advanced",
+      "pageCount": 7,
+      "syncedAt": "2026-06-23T10:42:42.393Z"
     },
     {
       "id": "35ada883bddd813694d3fa44eb7ceee9",
