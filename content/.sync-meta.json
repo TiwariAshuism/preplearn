@@ -1,5 +1,5 @@
 {
-  "lastSyncedAt": "2026-06-23T10:48:42.135Z",
+  "lastSyncedAt": "2026-06-27T10:40:07.923Z",
   "roots": [
     {
       "id": "36bda883bddd817a96b3ccec274f3003",
@@ -49,6 +49,13 @@
       "slug": "storage-engineering-interview-roadmap-120-days",
       "pageCount": 9,
       "syncedAt": "2026-06-23T10:48:42.135Z"
+    },
+    {
+      "id": "38ada883bddd811cadbfeb0a79a2e71b",
+      "title": "🤖 Android Interview Prep Hub",
+      "slug": "android-interview-prep-hub",
+      "pageCount": 11,
+      "syncedAt": "2026-06-27T10:40:07.923Z"
     },
     {
       "id": "384da883bddd81438d21ca87e13a859d",
