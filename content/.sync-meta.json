@@ -1,5 +1,5 @@
 {
-  "lastSyncedAt": "2026-06-27T10:40:07.923Z",
+  "lastSyncedAt": "2026-06-27T18:27:14.528Z",
   "roots": [
     {
       "id": "36bda883bddd817a96b3ccec274f3003",
@@ -56,6 +56,13 @@
       "slug": "android-interview-prep-hub",
       "pageCount": 11,
       "syncedAt": "2026-06-27T10:40:07.923Z"
+    },
+    {
+      "id": "38cda883bddd81b98874c1adfe349ac5",
+      "title": "🤖 AOSP Learning Roadmap",
+      "slug": "aosp-learning-roadmap",
+      "pageCount": 8,
+      "syncedAt": "2026-06-27T18:27:14.528Z"
     },
     {
       "id": "384da883bddd81438d21ca87e13a859d",
