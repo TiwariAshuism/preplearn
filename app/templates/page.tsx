@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { getHomeContent } from "@/features/home/lib/content";
 import { RoadmapCatalog } from "@/features/home/components/RoadmapCatalog";
@@ -38,12 +39,20 @@ export default function TemplatesCatalogPage() {
           </div>
         </section>
 
-        <RoadmapCatalog
-          collections={content.collections}
-          standalonePages={content.standalonePages}
-          showFilters
-          showHeader={false}
-        />
+        <Suspense
+          fallback={
+            <section className="page-gutter-x site-container py-12">
+              <div className="h-10 animate-pulse rounded-full bg-zinc-100 dark:bg-zinc-800" />
+            </section>
+          }
+        >
+          <RoadmapCatalog
+            collections={content.collections}
+            standalonePages={content.standalonePages}
+            showFilters
+            showHeader={false}
+          />
+        </Suspense>
       </main>
       <SiteFooter />
     </div>

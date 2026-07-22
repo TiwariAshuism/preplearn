@@ -1,6 +1,11 @@
 import Link from "next/link";
 import type { HomeContent } from "../lib/content";
-import { cleanRoadmapTitle } from "../lib/categories";
+import {
+  ROADMAP_CATEGORY_FILTERS,
+  buildCategoryCounts,
+  cleanRoadmapTitle,
+  type RoadmapCategory,
+} from "../lib/categories";
 
 type HomeHeroProps = {
   content: HomeContent;
@@ -9,6 +14,11 @@ type HomeHeroProps = {
 export function HomeHero({ content }: HomeHeroProps) {
   const { collections, stats } = content;
   const primary = collections[0];
+  const categoryCounts = buildCategoryCounts(collections);
+  const categoriesWithContent = ROADMAP_CATEGORY_FILTERS.filter(
+    (filter) =>
+      filter.id !== "all" && categoryCounts[filter.id as RoadmapCategory] > 0,
+  );
 
   return (
     <section className="relative overflow-hidden border-b border-zinc-200 dark:border-zinc-800">
@@ -43,6 +53,28 @@ export function HomeHero({ content }: HomeHeroProps) {
           last.
         </p>
 
+        {categoriesWithContent.length > 0 && (
+          <div
+            className="animate-on-load-delay-2 mt-8 -mx-[var(--page-gutter)] overflow-x-auto px-[var(--page-gutter)] min-[428px]:mx-0 min-[428px]:overflow-visible min-[428px]:px-0"
+            aria-label="Browse by category"
+          >
+            <div className="flex w-max min-w-full gap-2 min-[428px]:w-auto min-[428px]:flex-wrap">
+              {categoriesWithContent.map((filter) => (
+                <Link
+                  key={filter.id}
+                  href={`/?category=${filter.id}#roadmaps`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 bg-white/80 px-3.5 py-1.5 text-sm font-medium text-zinc-700 backdrop-blur transition-all duration-200 hover:scale-[1.02] hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-300 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/40 dark:hover:text-emerald-300"
+                >
+                  {filter.label}
+                  <span className="text-xs text-zinc-400">
+                    {categoryCounts[filter.id as RoadmapCategory]}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="animate-on-load-delay-3 mt-10 flex flex-col gap-3 min-[390px]:gap-4 sm:flex-row">
           {primary ? (
             <Link
@@ -63,10 +95,10 @@ export function HomeHero({ content }: HomeHeroProps) {
             </Link>
           )}
           <Link
-            href="/templates"
+            href="/#roadmaps"
             className="inline-flex h-12 min-h-11 items-center justify-center rounded-full border border-zinc-300 bg-white px-8 text-sm font-semibold text-zinc-900 transition-all duration-200 hover:scale-[1.02] hover:bg-zinc-50 active:scale-[0.98] min-[428px]:h-[3.25rem] min-[428px]:px-9 min-[428px]:text-base dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
           >
-            View all roadmaps
+            Browse by category
           </Link>
         </div>
 

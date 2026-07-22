@@ -15,6 +15,12 @@ function PhaseChip({
   child: HomeCollection["children"][number];
 }) {
   const phaseNumber = child.title.match(/Phase\s+(\d+)/i)?.[1];
+  const weekNumber = child.title.match(/Week\s+(\d+)/i)?.[1];
+  const chipLabel = phaseNumber
+    ? `Phase ${phaseNumber}`
+    : weekNumber
+      ? `Week ${weekNumber}`
+      : child.title.slice(0, 24);
 
   return (
     <Link
@@ -23,7 +29,7 @@ function PhaseChip({
       title={child.title}
     >
       {child.icon ? <span>{child.icon}</span> : null}
-      {phaseNumber ? `Phase ${phaseNumber}` : child.title.slice(0, 24)}
+      {chipLabel}
       {child.estimatedDays ? (
         <span className="text-zinc-400">· D{child.estimatedDays}</span>
       ) : null}
@@ -50,8 +56,14 @@ export function RoadmapCard({ collection }: RoadmapCardProps) {
         </div>
         {collection.childCount > 0 && (
           <span className="shrink-0 text-xs font-medium text-zinc-500">
-            {collection.childCount} phase
-            {collection.childCount !== 1 ? "s" : ""}
+            {collection.childCount}{" "}
+            {collection.children.some((child) => /week\s+\d+/i.test(child.title))
+              ? collection.childCount === 1
+                ? "week"
+                : "weeks"
+              : collection.childCount === 1
+                ? "phase"
+                : "phases"}
           </span>
         )}
       </div>
