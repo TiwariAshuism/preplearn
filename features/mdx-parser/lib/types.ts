@@ -11,6 +11,8 @@ export type PageFrontmatter = {
   order: number;
   icon: string | null;
   cover: string | null;
+  /** Catalog filter override (e.g. "ai", "mobile"). Used by home/templates catalog. */
+  category?: string;
   /** When true, skip this page in breadcrumbs (except when it is the current page). */
   hideInBreadcrumb?: boolean;
   related?: string[];

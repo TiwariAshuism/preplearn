@@ -9,6 +9,7 @@ children: ["all-90-days-reference-aillm-roadmap","phase-5-llms-and-applied-genai
 order: 2
 icon: "🧠"
 cover: null
+category: "ai"
 ---
 > **From Python/math foundations to building and deploying production LLM systems.** A structured, daily-practice roadmap covering classical ML, deep learning, transformers, and modern LLM/GenAI engineering — with code, projects, and the exact concepts interviewers and real systems expect.
 

@@ -37,10 +37,10 @@ export function HomeHero({ content }: HomeHeroProps) {
         </h1>
 
         <p className="animate-on-load-delay-2 mt-6 max-w-2xl text-base leading-7 text-zinc-600 min-[390px]:text-lg min-[390px]:leading-8 xl:max-w-3xl dark:text-zinc-400">
-          Structured 90-day paths for backend engineering, low-level design,
-          high-level design, and mobile — plus deep-dive notes on Go, networking,
-          databases, and production systems. Work through phases in order; each
-          builds on the last.
+          Structured paths for AI & LLMs, backend engineering, system design,
+          and mobile — plus deep-dive notes on Go, networking, databases, and
+          production systems. Work through phases in order; each builds on the
+          last.
         </p>
 
         <div className="animate-on-load-delay-3 mt-10 flex flex-col gap-3 min-[390px]:gap-4 sm:flex-row">

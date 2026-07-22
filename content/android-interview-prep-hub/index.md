@@ -9,6 +9,7 @@ children: ["important-topics-checklist","kotlin-multiplatform-kmp","performance-
 order: 0
 icon: "🤖"
 cover: null
+category: "mobile"
 ---
 
 A comprehensive Android + Kotlin interview preparation wiki, compiled from multiple expert sources. Organized by topic and difficulty level.

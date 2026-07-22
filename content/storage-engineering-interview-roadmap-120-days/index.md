@@ -9,6 +9,7 @@ children: ["all-120-days-reference-storage-engineering-roadmap","phase-8-system-
 order: 0
 icon: "🗃️"
 cover: null
+category: "backend"
 ---
 > **From software engineer to storage/distributed-systems engineer.** This roadmap is built specifically for roles at companies like Pure Storage, Cohesity, Rubrik, NetApp, Qumulo, VAST Data, WEKA, MinIO, Portworx, and cloud storage teams at AWS/GCP/Azure. DSA alone is not enough — these companies hire for domain depth.
 

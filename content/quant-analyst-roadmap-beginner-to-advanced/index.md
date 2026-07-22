@@ -9,6 +9,7 @@ children: ["phase-5-quant-strategies-ml-and-backtesting","phase-4-derivatives-pr
 order: 9
 icon: "📈"
 cover: null
+category: "quant"
 ---
 > 📈 **From statistics fundamentals to building production trading systems.** Math, programming, financial markets, derivatives pricing, statistical/ML models, backtesting, and risk management — the complete path to working as a quantitative analyst.
 

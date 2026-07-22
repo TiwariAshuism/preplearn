@@ -9,6 +9,7 @@ children: ["week-4-infrastructure-and-production-days-22-30","week-3-data-and-st
 order: 7
 icon: "☁️"
 cover: null
+category: "devops"
 ---
 > ☁️ **Learn every major AWS service hands-on using Floci — a free, zero-auth local AWS emulator.** No cloud bills. No credential setup. Real AWS SDK calls. Aligned with your Go backend stack.
 

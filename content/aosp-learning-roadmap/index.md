@@ -9,6 +9,7 @@ children: ["aosp-master-checklist","phase-6-customization-ota-and-contributing",
 order: 0
 icon: "🤖"
 cover: null
+category: "mobile"
 ---
 > **Goal:** Go from Android app developer → AOSP contributor / platform engineer who understands Android internals deeply.
 

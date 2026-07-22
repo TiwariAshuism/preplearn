@@ -3,6 +3,7 @@ source: manual
 title: "Phase 2 — Go, API Design & Auth"
 parent: null
 order: 21
+category: "reference"
 icon: "🔐"
 ---
 

@@ -17,6 +17,7 @@ children:
   - 12-go-analysis-tools
   - 13-debugging-analysis
 order: 26
+category: "reference"
 icon: "🐹"
 ---
 

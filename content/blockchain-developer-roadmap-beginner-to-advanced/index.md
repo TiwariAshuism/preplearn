@@ -9,6 +9,7 @@ children: ["phase-5-advanced-and-full-stack-web3-days-76-90","phase-4-security-a
 order: 6
 icon: "⛓️"
 cover: null
+category: "blockchain"
 ---
 > ⛓️ **Zero to production blockchain engineer.** From how Bitcoin works to deploying DeFi protocols, writing audited smart contracts, and building full-stack dApps.
 

@@ -1,4 +1,5 @@
 export type RoadmapCategory =
+  | "ai"
   | "backend"
   | "system-design"
   | "mobile"
@@ -14,6 +15,7 @@ export const ROADMAP_CATEGORY_FILTERS: {
   label: string;
 }[] = [
   { id: "all", label: "All" },
+  { id: "ai", label: "AI & LLMs" },
   { id: "backend", label: "Backend" },
   { id: "system-design", label: "System Design" },
   { id: "mobile", label: "Mobile" },
@@ -24,6 +26,7 @@ export const ROADMAP_CATEGORY_FILTERS: {
 ];
 
 export const ROADMAP_CATEGORY_LABELS: Record<RoadmapCategory, string> = {
+  ai: "AI & LLMs",
   backend: "Backend",
   "system-design": "System Design",
   mobile: "Mobile",
@@ -34,6 +37,7 @@ export const ROADMAP_CATEGORY_LABELS: Record<RoadmapCategory, string> = {
 };
 
 const VALID_CATEGORIES = new Set<RoadmapCategory>([
+  "ai",
   "backend",
   "system-design",
   "mobile",
@@ -80,12 +84,30 @@ export function inferRoadmapCategory(
   }
 
   if (
+    slug.includes("ai_course") ||
+    slug.includes("ai-") ||
+    slug.includes("-ai-") ||
+    slug.includes("llm") ||
+    slug.includes("genai") ||
+    slug.includes("agentic") ||
+    text.includes("llm") ||
+    text.includes("gen ai") ||
+    text.includes("agentic") ||
+    (text.includes("ai") &&
+      (text.includes("roadmap") || text.includes("engineering")))
+  ) {
+    return "ai";
+  }
+
+  if (
     slug.includes("android") ||
     slug.includes("kotlin") ||
     slug.includes("kmp") ||
+    slug.includes("aosp") ||
     text.includes("android") ||
     text.includes("kotlin") ||
-    text.includes("kmp")
+    text.includes("kmp") ||
+    text.includes("aosp")
   ) {
     return "mobile";
   }

@@ -9,6 +9,7 @@ children: ["phase-5-expert-androidkmp-days-76-90","phase-4-kotlin-multiplatform-
 order: 4
 icon: "📦"
 cover: null
+category: "mobile"
 ---
 > 📦 **Frontend → Android/KMP Engineer transition.** 90 days. 5 phases. From Kotlin basics to production-grade Kotlin Multiplatform apps.
 

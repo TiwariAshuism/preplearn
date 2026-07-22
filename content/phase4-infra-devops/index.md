@@ -3,6 +3,7 @@ source: manual
 title: "Phase 4 — Infrastructure & DevOps"
 parent: null
 order: 24
+category: "devops"
 icon: "☸️"
 ---
 

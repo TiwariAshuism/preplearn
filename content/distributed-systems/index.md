@@ -3,6 +3,7 @@ source: manual
 title: "Distributed Systems — Production Playbook"
 parent: null
 order: 25
+category: "reference"
 icon: "🌍"
 ---
 

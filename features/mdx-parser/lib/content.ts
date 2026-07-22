@@ -218,6 +218,7 @@ export function normalizeFrontmatter(
     order,
     icon: typeof raw.icon === "string" ? raw.icon : null,
     cover: typeof raw.cover === "string" ? raw.cover : null,
+    category: typeof raw.category === "string" ? raw.category : undefined,
     hideInBreadcrumb:
       raw.hideInBreadcrumb === true
         ? true

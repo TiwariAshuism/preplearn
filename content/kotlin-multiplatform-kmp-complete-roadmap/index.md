@@ -9,6 +9,7 @@ children: ["60-day-plan-all-days-reference","phase-5-production-and-cicd-days-55
 order: 8
 icon: "🌐"
 cover: null
+category: "mobile"
 ---
 > 🌐 **One Kotlin codebase. Android. iOS. Desktop. Web.** From KMP project setup to production-grade shared logic, Compose Multiplatform UI, iOS interop with SKIE, and full CI/CD pipeline.
 

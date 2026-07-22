@@ -3,6 +3,7 @@ source: manual
 title: "Phase 3 — Databases & Distributed Systems"
 parent: null
 order: 22
+category: "reference"
 icon: "🗄️"
 ---
 

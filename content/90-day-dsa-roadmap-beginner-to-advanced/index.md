@@ -9,6 +9,7 @@ children: ["all-90-days-reference-dsa-roadmap","phase-5-advanced-and-interview-p
 order: 1
 icon: "🧩"
 cover: null
+category: "backend"
 ---
 > **From array basics to advanced dynamic programming and graph algorithms.** A structured, daily-practice roadmap with patterns, problems, code templates, and the exact thinking process interviewers expect.
 

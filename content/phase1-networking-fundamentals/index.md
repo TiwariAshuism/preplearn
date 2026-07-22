@@ -3,6 +3,7 @@ source: manual
 title: "Phase 1 — Networking & OS Fundamentals"
 parent: null
 order: 20
+category: "reference"
 icon: "🌐"
 ---
 

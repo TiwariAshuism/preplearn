@@ -9,6 +9,7 @@ children: ["week-4-production-toolchain-days-22-30","week-3-advanced-kubernetes-
 order: 8
 icon: "🐳"
 cover: null
+category: "devops"
 ---
 > 🐳 **From zero to production-grade container orchestration.** Docker internals, Kubernetes architecture, Helm, Istio, ArgoCD, Prometheus, Grafana, and the full cloud-native toolchain. Aligned with your Go backend stack.
 

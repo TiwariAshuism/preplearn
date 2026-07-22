@@ -9,6 +9,7 @@ children: ["phase-5-expert-lld-days-76-90","phase-4-advanced-lld-problems-days-5
 order: 2
 icon: "🧩"
 cover: null
+category: "system-design"
 ---
 > 🧩 **Frontend → Systems Engineer transition.** 90 days. 5 phases. Low-Level Design mastery from OOP fundamentals to production-grade class architecture.
 

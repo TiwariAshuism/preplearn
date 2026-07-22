@@ -9,6 +9,7 @@ children: ["phase-5-expert-level-systems-days-76-90","phase-4-real-system-design
 order: 1
 icon: "🏗️"
 cover: null
+category: "system-design"
 ---
 > 🏗️ **Frontend → Systems Engineer transition.** 90 days. 5 phases. High-Level Design mastery from first principles to staff-engineer level.
 
@@ -446,6 +447,7 @@ Every large system is assembled from the same 10–12 primitives. This phase mak
 
 
 Cover: algorithm choice + justification (token bucket or sliding window counter), Redis data structure used (sorted set vs string with INCR), why Lua script is required for atomicity, how to handle 3 tiers (per-user 100/min, per-IP 1000/min, per-endpoint 10K/min), behaviour when Redis is unavailable (fail-open vs fail-closed tradeoff), and how to test it under concurrent load.
+category: "system-design"
 
 
 ### Project 3 — Technology selection matrix
@@ -871,6 +873,7 @@ Structure using RESHADED: requirements (DAU, tweets/day, timeline load QPS), est
 
 
 Cover: driver location update pipeline (1M updates/sec), matching service design (geohash grid, candidate selection, ETA ranking), trip state machine (6 states, all transitions), surge pricing computation (batch job, per-cell, cache-served), multi-region considerations (riders in one region, drivers in the same), and top 3 failure scenarios with mitigations.
+category: "system-design"
 
 
 ### Project 3 — Self-timed mock design interview

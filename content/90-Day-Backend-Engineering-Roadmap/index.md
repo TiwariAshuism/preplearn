@@ -9,6 +9,7 @@ children: ["phase-4-infrastructure-and-devops-days-56-75","phase-5-expert-system
 order: 0
 icon: "🖥️"
 cover: null
+category: "backend"
 ---
 > 🎯 **Frontend → Backend transition roadmap.** 90 days. 5 phases. Production-grade systems thinking.
 
