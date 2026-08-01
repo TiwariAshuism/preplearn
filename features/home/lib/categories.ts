@@ -104,10 +104,16 @@ export function inferRoadmapCategory(
     slug.includes("kotlin") ||
     slug.includes("kmp") ||
     slug.includes("aosp") ||
+    slug.includes("ios") ||
+    slug.includes("swift") ||
+    slug.includes("compose") ||
     text.includes("android") ||
     text.includes("kotlin") ||
     text.includes("kmp") ||
-    text.includes("aosp")
+    text.includes("aosp") ||
+    text.includes("ios") ||
+    text.includes("swift") ||
+    text.includes("jetpack compose")
   ) {
     return "mobile";
   }

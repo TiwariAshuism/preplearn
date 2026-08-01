@@ -1,5 +1,5 @@
 {
-  "lastSyncedAt": "2026-06-27T18:27:14.528Z",
+  "lastSyncedAt": "2026-08-01T17:09:16.748Z",
   "roots": [
     {
       "id": "36bda883bddd817a96b3ccec274f3003",
@@ -44,6 +44,20 @@
       "syncedAt": "2026-06-15T06:56:16.678Z"
     },
     {
+      "id": "39cda883bddd81908f86f82489b8c0c1",
+      "title": "📱 90-Day Swift / iOS Development Roadmap — Beginner to Advanced",
+      "slug": "90-day-swift-ios-development-roadmap-beginner-to-advanced",
+      "pageCount": 8,
+      "syncedAt": "2026-08-01T17:08:11.033Z"
+    },
+    {
+      "id": "397da883bddd8107828af62dce1be2a4",
+      "title": "🔥 Kotlin/Android Deep Mastery — 30-Day Sprint",
+      "slug": "kotlinandroid-deep-mastery-30-day-sprint",
+      "pageCount": 1,
+      "syncedAt": "2026-08-01T17:07:21.012Z"
+    },
+    {
       "id": "380da883bddd81e1abc7c118d4e018d9",
       "title": "🗃️ Storage Engineering Interview Roadmap — 120 Days",
       "slug": "storage-engineering-interview-roadmap-120-days",
@@ -70,6 +84,13 @@
       "slug": "90-day-ai-llm-engineering-roadmap-beginner-to-advanced",
       "pageCount": 7,
       "syncedAt": "2026-06-23T10:41:27.313Z"
+    },
+    {
+      "id": "38eda883bddd8103a17de1ddcca965c6",
+      "title": "🧠 Jetpack Compose Internals — Complete Deep Dive",
+      "slug": "jetpack-compose-internals-complete-deep-dive",
+      "pageCount": 10,
+      "syncedAt": "2026-08-01T17:09:16.748Z"
     },
     {
       "id": "383da883bddd81feae11fbbfc249f450",

@@ -1,7 +1,7 @@
-# Graph Report - C:\Users\Ashu\Documents\preplearn  (2026-07-22)
+# Graph Report - C:\Users\Ashu\Documents\preplearn  (2026-08-01)
 
 ## Corpus Check
-- 54 files · ~380,141 words
+- 54 files · ~415,449 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
