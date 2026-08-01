@@ -1,12 +1,12 @@
-# Graph Report - C:\Users\Ashu\Documents\preplearn  (2026-08-01)
+# Graph Report - C:\Users\Ashu\Documents\preplearn  (2026-08-02)
 
 ## Corpus Check
-- 54 files · ~415,449 words
+- 54 files · ~416,113 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 221 nodes · 370 edges · 41 communities detected
-- Extraction: 87% EXTRACTED · 13% INFERRED · 0% AMBIGUOUS · INFERRED: 47 edges (avg confidence: 0.8)
+- 229 nodes · 386 edges · 41 communities detected
+- Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 48 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -80,7 +80,7 @@
 
 ### Community 0 - "Community 0"
 Cohesion: 0.11
-Nodes (23): deleteKV(), getDB(), getKV(), setKV(), isOfflineEnabled(), loadSearchIndex(), refreshSearchIndexIfNeeded(), clearStoredHashes() (+15 more)
+Nodes (24): deleteKV(), getDB(), getKV(), setKV(), isOfflineEnabled(), loadSearchIndex(), refreshSearchIndexIfNeeded(), checkForServiceWorkerUpdate() (+16 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.22
@@ -95,8 +95,8 @@ Cohesion: 0.12
 Nodes (13): buildSearchIndex(), excerpt(), compilePageMDX(), generateMetadata(), generateStaticParams(), TemplatesDocPage(), findChildByRelativeTarget(), normalizeRelativeTarget() (+5 more)
 
 ### Community 4 - "Community 4"
-Cohesion: 0.33
-Nodes (12): assetsCacheName(), countCachedPages(), ensureVersions(), fetchManifest(), handleRequest(), isDocumentRequest(), isRscRequest(), matchCaches() (+4 more)
+Cohesion: 0.27
+Nodes (14): assetsCacheName(), countCachedPages(), ensureVersions(), fetchManifest(), handleRequest(), isDocumentRequest(), isHashedAssetRequest(), isMutableRequest() (+6 more)
 
 ### Community 5 - "Community 5"
 Cohesion: 0.31
@@ -111,24 +111,24 @@ Cohesion: 0.43
 Nodes (4): inferRoadmapCategory(), isDeepNotesCollection(), isStandalonePhaseNotes(), resolveRoadmapCategory()
 
 ### Community 8 - "Community 8"
-Cohesion: 0.52
-Nodes (6): buildPageContext(), extractEstimatedDays(), extractToc(), flattenNavLinks(), resolveRelatedSlugs(), slugToHeadingId()
-
-### Community 9 - "Community 9"
 Cohesion: 0.43
 Nodes (5): formatSyncDate(), readSyncMeta(), upsertSyncRoot(), writeSyncMeta(), TemplatesShell()
 
+### Community 9 - "Community 9"
+Cohesion: 0.52
+Nodes (6): buildPageContext(), extractEstimatedDays(), extractToc(), flattenNavLinks(), resolveRelatedSlugs(), slugToHeadingId()
+
 ### Community 10 - "Community 10"
+Cohesion: 0.52
+Nodes (6): buildOfflineManifest(), collectMarkdownFiles(), collectStaticAssets(), hashContentCorpus(), hashPayload(), stampServiceWorker()
+
+### Community 11 - "Community 11"
 Cohesion: 0.6
 Nodes (5): shortBreadcrumbTitle(), shortNavTitle(), shouldShowInBreadcrumb(), stripDayRange(), stripLeadingIcon()
 
-### Community 11 - "Community 11"
+### Community 12 - "Community 12"
 Cohesion: 0.67
 Nodes (5): collectInternalLinks(), looksLikeDocHref(), main(), resolveLink(), stripCodeSegments()
-
-### Community 12 - "Community 12"
-Cohesion: 0.83
-Nodes (3): buildOfflineManifest(), collectStaticAssets(), hashPayload()
 
 ### Community 13 - "Community 13"
 Cohesion: 0.67
@@ -291,10 +291,10 @@ Nodes (0):
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `getPageBySlug()` connect `Community 1` to `Community 2`, `Community 3`, `Community 6`, `Community 8`, `Community 10`?**
-  _High betweenness centrality (0.174) - this node is a cross-community bridge._
+- **Why does `getPageBySlug()` connect `Community 1` to `Community 2`, `Community 3`, `Community 6`, `Community 9`, `Community 11`?**
+  _High betweenness centrality (0.164) - this node is a cross-community bridge._
 - **Why does `trimCollectionHubBody()` connect `Community 2` to `Community 1`, `Community 3`?**
-  _High betweenness centrality (0.125) - this node is a cross-community bridge._
+  _High betweenness centrality (0.120) - this node is a cross-community bridge._
 - **Are the 7 inferred relationships involving `getPageBySlug()` (e.g. with `generateMetadata()` and `TemplatesDocPage()`) actually correct?**
   _`getPageBySlug()` has 7 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 3 inferred relationships involving `slugToFilePath()` (e.g. with `buildSearchIndex()` and `resolveLink()`) actually correct?**

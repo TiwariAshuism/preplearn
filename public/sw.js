@@ -1,19 +1,22 @@
-/* PrepLearn offline SW — split caches: pages (contentHash) + build assets (assetsHash) */
+/* PrepLearn offline SW — network-first for pages; cache-first for hashed assets */
+/* BUILD_HASH: dev */
 
 const PAGES_PREFIX = "preplearn-pages-";
 const ASSETS_PREFIX = "preplearn-assets-";
+const VERSION_TTL_MS = 30_000;
+
+/** Shell URLs safe to precache. Never include offline-routes.json (version file). */
 const SHELL_URLS = [
   "/",
   "/templates",
   "/offline-fallback.html",
-  "/offline-routes.json",
   "/manifest.json",
-  "/sw.js",
   "/icons/icon.svg",
 ];
 
 let activeContentHash = null;
 let activeAssetsHash = null;
+let versionsCheckedAt = 0;
 
 async function fetchManifest() {
   try {
@@ -33,11 +36,18 @@ function assetsCacheName(assetsHash) {
   return `${ASSETS_PREFIX}${assetsHash}`;
 }
 
-async function ensureVersions() {
-  if (activeContentHash && activeAssetsHash) return;
+async function ensureVersions(force = false) {
+  const fresh =
+    activeContentHash &&
+    activeAssetsHash &&
+    Date.now() - versionsCheckedAt < VERSION_TTL_MS;
+
+  if (!force && fresh) return;
+
   const manifest = await fetchManifest();
   if (manifest?.contentHash) activeContentHash = manifest.contentHash;
   if (manifest?.assetsHash) activeAssetsHash = manifest.assetsHash;
+  versionsCheckedAt = Date.now();
 }
 
 async function pruneOldCaches(contentHash, assetsHash) {
@@ -69,6 +79,31 @@ function isDocumentRequest(request) {
     request.mode === "navigate" ||
     (request.headers.get("accept") || "").includes("text/html")
   );
+}
+
+function isMutableRequest(request) {
+  const url = new URL(request.url);
+  const path = url.pathname;
+  return (
+    isDocumentRequest(request) ||
+    isRscRequest(request) ||
+    path === "/offline-routes.json" ||
+    path === "/search-index.json" ||
+    path === "/sw.js"
+  );
+}
+
+function isHashedAssetRequest(request) {
+  const url = new URL(request.url);
+  return (
+    url.pathname.startsWith("/_next/static/") ||
+    url.pathname.startsWith("/icons/") ||
+    url.pathname === "/manifest.json"
+  );
+}
+
+function isVersionManifest(request) {
+  return new URL(request.url).pathname === "/offline-routes.json";
 }
 
 async function matchInCache(cacheName, request) {
@@ -121,6 +156,7 @@ async function precacheShell(manifest) {
 
   activeContentHash = manifest.contentHash;
   activeAssetsHash = manifest.assetsHash;
+  versionsCheckedAt = Date.now();
 
   const pages = await caches.open(pagesCacheName(activeContentHash));
   await Promise.all(
@@ -128,7 +164,10 @@ async function precacheShell(manifest) {
       try {
         const existing = await pages.match(url);
         if (existing) return;
-        const response = await fetch(url, { credentials: "same-origin" });
+        const response = await fetch(url, {
+          credentials: "same-origin",
+          cache: "no-store",
+        });
         if (response.ok) await pages.put(url, response);
       } catch {
         /* skip */
@@ -159,6 +198,7 @@ self.addEventListener("activate", (event) => {
       const manifest = await fetchManifest();
       if (manifest?.contentHash) activeContentHash = manifest.contentHash;
       if (manifest?.assetsHash) activeAssetsHash = manifest.assetsHash;
+      versionsCheckedAt = Date.now();
       if (activeContentHash && activeAssetsHash) {
         await pruneOldCaches(activeContentHash, activeAssetsHash);
         await precacheShell(manifest);
@@ -175,6 +215,7 @@ self.addEventListener("message", (event) => {
   if (data.type === "SET_VERSIONS") {
     if (data.contentHash) activeContentHash = data.contentHash;
     if (data.assetsHash) activeAssetsHash = data.assetsHash;
+    versionsCheckedAt = Date.now();
     return;
   }
 
@@ -198,6 +239,7 @@ self.addEventListener("message", (event) => {
 
   if (data.contentHash) activeContentHash = data.contentHash;
   if (data.assetsHash) activeAssetsHash = data.assetsHash;
+  versionsCheckedAt = Date.now();
 
   event.waitUntil(
     (async () => {
@@ -211,8 +253,13 @@ self.addEventListener("message", (event) => {
 
       await Promise.all(
         urls.map(async (url) => {
+          // Never store the version manifest in Cache API.
+          if (url.includes("/offline-routes.json")) return;
           try {
-            const response = await fetch(url, { credentials: "same-origin" });
+            const response = await fetch(url, {
+              credentials: "same-origin",
+              cache: "no-store",
+            });
             if (response.ok) {
               await cache.put(url, response);
               cached++;
@@ -244,44 +291,87 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // Version file must always hit the network (bypass Cache API entirely).
+  if (isVersionManifest(request)) {
+    event.respondWith(fetch(request, { cache: "no-store" }));
+    return;
+  }
+
   event.respondWith(handleRequest(request));
 });
 
 async function handleRequest(request) {
-  await ensureVersions();
+  // Online mutable responses (HTML/RSC/search): network-first so deploys show up.
+  if (isMutableRequest(request)) {
+    try {
+      const response = await fetch(request, { cache: "no-store" });
+      if (response.ok) {
+        // Refresh in-memory hashes so offline cache buckets stay current.
+        await ensureVersions(true);
 
-  const cached = await matchCaches(request);
-  if (cached) return cached;
+        const path = new URL(request.url).pathname;
+        if (path !== "/search-index.json" && path !== "/sw.js") {
+          await putInCache(request, response.clone(), "pages");
+        }
+      }
+      return response;
+    } catch {
+      const cached = await matchCaches(request);
+      if (cached) return cached;
 
+      if (isDocumentRequest(request)) {
+        const fallback = await matchCaches(
+          new Request("/offline-fallback.html"),
+        );
+        if (fallback) return fallback;
+      }
+
+      if (isRscRequest(request)) {
+        const url = new URL(request.url);
+        const docRequest = new Request(url.origin + url.pathname, {
+          method: "GET",
+          headers: { accept: "text/html" },
+        });
+        const docCached = await matchCaches(docRequest);
+        if (docCached) return docCached;
+      }
+
+      return new Response("Offline — content not cached yet.", {
+        status: 503,
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
+      });
+    }
+  }
+
+  // Hashed static assets: cache-first is safe (filename changes on deploy).
+  if (isHashedAssetRequest(request)) {
+    const cached = await matchCaches(request);
+    if (cached) return cached;
+
+    try {
+      const response = await fetch(request);
+      if (response.ok) {
+        await putInCache(request, response.clone(), "assets");
+      }
+      return response;
+    } catch {
+      return new Response("Offline — asset not cached yet.", {
+        status: 503,
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
+      });
+    }
+  }
+
+  // Everything else: network-first with cache fallback.
   try {
     const response = await fetch(request);
     if (response.ok) {
-      const bucket =
-        request.url.includes("/_next/static/") ||
-        request.url.includes("/icons/") ||
-        request.url.endsWith("/manifest.json") ||
-        request.url.endsWith("/sw.js")
-          ? "assets"
-          : "pages";
-      await putInCache(request, response.clone(), bucket);
+      await putInCache(request, response.clone(), "pages");
     }
     return response;
   } catch {
-    if (isDocumentRequest(request)) {
-      const fallback = await matchCaches(new Request("/offline-fallback.html"));
-      if (fallback) return fallback;
-    }
-
-    if (isRscRequest(request)) {
-      const url = new URL(request.url);
-      const docRequest = new Request(url.origin + url.pathname, {
-        method: "GET",
-        headers: { accept: "text/html" },
-      });
-      const docCached = await matchCaches(docRequest);
-      if (docCached) return docCached;
-    }
-
+    const cached = await matchCaches(request);
+    if (cached) return cached;
     return new Response("Offline — content not cached yet.", {
       status: 503,
       headers: { "Content-Type": "text/plain; charset=utf-8" },

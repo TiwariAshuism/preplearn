@@ -47,6 +47,24 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        source: "/offline-routes.json",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, must-revalidate",
+          },
+        ],
+      },
+      {
+        source: "/search-index.json",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, must-revalidate",
+          },
+        ],
+      },
+      {
         source: "/:path*",
         headers: securityHeaders,
       },

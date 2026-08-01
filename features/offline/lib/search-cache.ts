@@ -13,7 +13,9 @@ export async function loadSearchIndex(): Promise<SearchEntry[]> {
   if (cached && cached.length > 0) return cached;
 
   try {
-    const res = await fetch("/search-index.json");
+    const res = await fetch(`/search-index.json?t=${Date.now()}`, {
+      cache: "no-store",
+    });
     if (!res.ok) return cached ?? [];
     const data = (await res.json()) as SearchEntry[];
     const manifest = await fetchOfflineManifest();
@@ -42,7 +44,9 @@ export async function refreshSearchIndexIfNeeded(): Promise<SearchEntry[]> {
   }
 
   try {
-    const res = await fetch("/search-index.json", { cache: "no-store" });
+    const res = await fetch(`/search-index.json?t=${Date.now()}`, {
+      cache: "no-store",
+    });
     if (!res.ok) return cached;
     const data = (await res.json()) as SearchEntry[];
     await setKV(SEARCH_KEY, data);

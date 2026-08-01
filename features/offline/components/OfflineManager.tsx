@@ -7,6 +7,8 @@ import {
   syncOfflineCacheIfNeeded,
   getOfflineCacheStats,
   fetchOfflineManifest,
+  checkForServiceWorkerUpdate,
+  watchServiceWorkerUpdates,
   type OfflineCacheProgress,
 } from "../lib/sw-client";
 import { isOfflineEnabled, teardownOfflineClient } from "../lib/env";
@@ -92,6 +94,7 @@ export function OfflineManager() {
 
   useEffect(() => {
     let cancelled = false;
+    const stopWatching = watchServiceWorkerUpdates();
 
     async function checkCacheReady() {
       const manifest = await fetchOfflineManifest();
@@ -107,6 +110,7 @@ export function OfflineManager() {
     }
 
     async function runSync() {
+      await checkForServiceWorkerUpdate();
       await refreshSearchIndexIfNeeded();
 
       const result = await syncOfflineCacheIfNeeded((p) => {
@@ -159,6 +163,7 @@ export function OfflineManager() {
 
     return () => {
       cancelled = true;
+      stopWatching();
       window.removeEventListener("online", onOnline);
       document.removeEventListener("visibilitychange", onVisible);
     };

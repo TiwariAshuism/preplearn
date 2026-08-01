@@ -58,7 +58,10 @@ export async function clearStoredHashes(): Promise<void> {
 
 export async function fetchOfflineManifest(): Promise<OfflineManifest | null> {
   try {
-    const res = await fetch("/offline-routes.json", { cache: "no-store" });
+    // Bust HTTP + ensure we don't reuse a stale SW-era URL.
+    const res = await fetch(`/offline-routes.json?t=${Date.now()}`, {
+      cache: "no-store",
+    });
     if (!res.ok) return null;
     return (await res.json()) as OfflineManifest;
   } catch {
@@ -76,12 +79,58 @@ export async function registerServiceWorker(): Promise<ServiceWorkerRegistration
   try {
     const registration = await navigator.serviceWorker.register("/sw.js", {
       scope: "/",
+      updateViaCache: "none",
     });
     await navigator.serviceWorker.ready;
+
+    // Pick up a newly deployed sw.js without requiring a hard refresh.
+    registration.update().catch(() => {});
+
     return registration;
   } catch {
     return null;
   }
+}
+
+/** Ask the browser to check for a newer service worker. */
+export async function checkForServiceWorkerUpdate(): Promise<void> {
+  if (!isOfflineEnabled()) return;
+  if (typeof window === "undefined" || !("serviceWorker" in navigator)) return;
+
+  try {
+    const registration = await navigator.serviceWorker.getRegistration();
+    await registration?.update();
+  } catch {
+    /* ignore */
+  }
+}
+
+/**
+ * Reload once when a new SW takes control so users see the latest deploy
+ * without a manual hard refresh.
+ */
+export function watchServiceWorkerUpdates(): () => void {
+  if (typeof window === "undefined" || !("serviceWorker" in navigator)) {
+    return () => {};
+  }
+
+  let refreshing = false;
+  const onControllerChange = () => {
+    if (refreshing) return;
+    refreshing = true;
+    window.location.reload();
+  };
+
+  navigator.serviceWorker.addEventListener(
+    "controllerchange",
+    onControllerChange,
+  );
+  return () => {
+    navigator.serviceWorker.removeEventListener(
+      "controllerchange",
+      onControllerChange,
+    );
+  };
 }
 
 async function getActiveWorker(): Promise<ServiceWorker | null> {
